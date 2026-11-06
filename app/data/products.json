@@ -1,0 +1,110 @@
+[
+  {
+    "id": "rogel-clasico",
+    "name": "Rogel Clásico de Facu",
+    "category": "destacados",
+    "category_label": "Especialidades",
+    "badge": "La estrella de Facu ⭐",
+    "description": "El clásico indiscutido por el que todos conocen a Facundo. Capas finas y crocantes intercaladas con abundante dulce de leche repostero y coronado con merengue italiano flameado.",
+    "price": 18500,
+    "portions": "Rinde 10 a 12 porciones",
+    "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80",
+    "is_featured": true
+  },
+  {
+    "id": "tarta-coco-ddl",
+    "name": "Tarta de Coco con Dulce de Leche",
+    "category": "tartas",
+    "category_label": "Tartas Dulces",
+    "badge": "Favorita del barrio",
+    "description": "Masa quebrada casera con una generosa base de dulce de leche colonial y cubierta tostada de coco crocante al horno.",
+    "price": 14000,
+    "portions": "Rinde 8 a 10 porciones (24 cm)",
+    "image": "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80",
+    "is_featured": true
+  },
+  {
+    "id": "tarta-ricota",
+    "name": "Tarta de Ricota Tradicional",
+    "category": "tartas",
+    "category_label": "Tartas Dulces",
+    "badge": "Receta Casera",
+    "description": "Relleno extra cremoso de ricota fresca con suave aroma a vainilla y ralladura de limón, terminada con lluvia de azúcar impalpable.",
+    "price": 13500,
+    "portions": "Rinde 8 a 10 porciones",
+    "image": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80",
+    "is_featured": true
+  },
+  {
+    "id": "brownie-bomba",
+    "name": "Torta Brownie Bomba",
+    "category": "tortas",
+    "category_label": "Tortas Enteras",
+    "badge": "Puro Chocolate",
+    "description": "Base húmeda e intensa de chocolate semiamargo, dulce de leche repostero a montones y merengue italiano suave.",
+    "price": 17500,
+    "portions": "Rinde 10 a 12 porciones",
+    "image": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80",
+    "is_featured": true
+  },
+  {
+    "id": "lemon-pie",
+    "name": "Lemon Pie Artesanal",
+    "category": "tartas",
+    "category_label": "Tartas Dulces",
+    "badge": "Fresco y Cítrico",
+    "description": "Curd suave elaborado con jugo natural de limones frescos, masa crocante y merengue italiano tostado a soplete.",
+    "price": 14500,
+    "portions": "Rinde 8 a 10 porciones",
+    "image": "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=800&q=80",
+    "is_featured": false
+  },
+  {
+    "id": "pastafrola-membrillo",
+    "name": "Pastafrola Casera de Membrillo",
+    "category": "tartas",
+    "category_label": "Tartas Dulces",
+    "badge": "Para el mate",
+    "description": "La infaltable compañera de las tardes. Masa tierna perfumada con vainilla y dulce de membrillo artesanal de primera calidad.",
+    "price": 11000,
+    "portions": "Rinde 8 porciones",
+    "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
+    "is_featured": false
+  },
+  {
+    "id": "tiramisu",
+    "name": "Tiramisú en Fuente",
+    "category": "tortas",
+    "category_label": "Tortas Enteras",
+    "badge": "Un Manjar",
+    "description": "Vainillas artesanales embebidas en café espresso con licor, crema suave de queso mascarpone y lluvia de cacao amargo.",
+    "price": 16000,
+    "portions": "Rinde 8 a 10 porciones",
+    "image": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80",
+    "is_featured": false
+  },
+  {
+    "id": "box-porciones",
+    "name": "Caja Mix de Porciones",
+    "category": "porciones",
+    "category_label": "Porciones & Merienda",
+    "badge": "Ideal Degustación",
+    "description": "Caja con 4 porciones surtidas a elección (Rogel, Coco con DDL, Ricota y Brownie). Ideal para compartir o darse un gusto.",
+    "price": 7500,
+    "portions": "4 porciones generosas",
+    "image": "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&w=800&q=80",
+    "is_featured": true
+  },
+  {
+    "id": "alfajores-maicena",
+    "name": "Docena de Alfajores de Maicena",
+    "category": "porciones",
+    "category_label": "Porciones & Merienda",
+    "badge": "Se deshacen en la boca",
+    "description": "Tapas suaves que se deshacen en la boca, extra dulce de leche repostero y coco rallado en los bordes.",
+    "price": 9000,
+    "portions": "Caja por 12 unidades",
+    "image": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=800&q=80",
+    "is_featured": false
+  }
+]

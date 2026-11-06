@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>{{ business.name }} | Pastelería Artesanal en Hurlingham</title>
+  
+  <!-- SEO & Social Meta Tags (Open Graph for WhatsApp / Instagram) -->
+  <meta name="description" content="Tortas y tartas artesanales hechas con amor en Hurlingham por Facundo Juárez Downes. Rogel clásico, coco con dulce de leche, ricota y más. ¡Pedí directo por WhatsApp!">
+  <meta property="og:title" content="Facu de las Tortas | Pastelería Artesanal en Hurlingham">
+  <meta property="og:description" content="Más de 20 años endulzando los hogares de Hurlingham. Conocé nuestras especialidades y hacé tu pedido por WhatsApp.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#d97706">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍰</text></svg>">
+
+  <!-- Google Fonts: Playfair Display + Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          colors: {
+            dulce: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              200: '#fde68a',
+              300: '#fcd34d',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309',
+              800: '#92400e',
+              900: '#78350f',
+              950: '#451a03',
+            },
+            merengue: '#faf7f2',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body class="bg-merengue text-stone-800 font-sans antialiased selection:bg-dulce-200 selection:text-dulce-900 min-h-screen flex flex-col pb-24 md:pb-12">
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="bg-dulce-800 text-amber-100 text-xs sm:text-sm py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2">
+    <span>🛵 Entregas en Hurlingham y alrededores</span>
+    <span class="hidden sm:inline">•</span>
+    <span class="hidden sm:inline">🍰 Pedidos con 24/48 hs de anticipación</span>
+  </div>
+
+  <!-- NAVIGATION -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-amber-100 transition-shadow duration-200">
+    <div class="max-w-6xl mx-auto px-4 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo / Identity -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-dulce-100 border border-dulce-300 flex items-center justify-center text-xl sm:text-2xl shadow-inner group-hover:scale-105 transition-transform">
+          🍰
+        </div>
+        <div>
+          <span class="font-serif font-black text-xl sm:text-2xl text-stone-900 tracking-tight block leading-tight">
+            Facu <span class="text-dulce-600 font-normal italic">de las tortas</span>
+          </span>
+          <span class="text-[11px] sm:text-xs text-stone-500 flex items-center gap-1 font-medium">
+            <i class="ph-fill ph-map-pin text-dulce-600 text-xs"></i> Hurlingham, Bs. As.
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav & Socials -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <a href="#menu" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-stone-700 hover:text-dulce-700 hover:bg-amber-50 rounded-full transition-colors">
+          <i class="ph-bold ph-book-open"></i> Menú
+        </a>
+        <a href="#historia" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-stone-700 hover:text-dulce-700 hover:bg-amber-50 rounded-full transition-colors">
+          <i class="ph-bold ph-heart"></i> La Historia
+        </a>
+        <a href="#como-pedir" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-stone-700 hover:text-dulce-700 hover:bg-amber-50 rounded-full transition-colors">
+          <i class="ph-bold ph-shopping-bag"></i> Cómo pedir
+        </a>
+
+        <!-- Instagram Link -->
+        <a href="{{ business.instagram_url }}" target="_blank" rel="noopener" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-stone-100 hover:bg-amber-100 text-stone-700 hover:text-pink-600 flex items-center justify-center transition-colors text-lg" title="Instagram de Facu">
+          <i class="ph-bold ph-instagram-logo"></i>
+        </a>
+
+        <!-- WhatsApp Quick Link -->
+        <a href="https://wa.me/{{ business.phone_raw }}?text=¡Hola%20Facu!%20Te%20contacto%20desde%20la%20web" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow transition-all">
+          <i class="ph-fill ph-whatsapp-logo text-base sm:text-lg"></i>
+          <span class="hidden xs:inline">WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION (Mobile Optimized) -->
+  <section class="relative overflow-hidden pt-8 pb-12 sm:py-16 md:py-20 bg-gradient-to-b from-amber-50/60 via-amber-50/20 to-merengue">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        
+        <!-- Left Column: Copy & CTAs -->
+        <div class="lg:col-span-7 text-center lg:text-left space-y-5">
+          
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dulce-100 text-dulce-900 border border-dulce-300/80 text-xs sm:text-sm font-semibold shadow-xs">
+            <span class="flex h-2 w-2 rounded-full bg-dulce-600 animate-pulse"></span>
+            Más de 20 años endulzando Hurlingham
+          </div>
+
+          <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-[1.15] tracking-tight">
+            El sabor casero de siempre, hecho con <span class="text-dulce-600 italic">el corazón</span>.
+          </h1>
+
+          <p class="text-base sm:text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+            Las tortas y tartas artesanales de <strong class="text-stone-900 font-semibold">Facundo Juárez Downes</strong>. Ingredientes de primera, abundante dulce de leche y la pasión de toda una vida en cada porción.
+          </p>
+
+          <!-- Badges highlight -->
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1 text-xs sm:text-sm text-stone-700">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-amber-200/80 font-medium shadow-xs">
+              ⭐ Rogel Inconfundible
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-amber-200/80 font-medium shadow-xs">
+              🥥 Tartas de Coco & DDL
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-amber-200/80 font-medium shadow-xs">
+              🍫 Brownies & Porciones
+            </span>
+          </div>
+
+          <!-- Hero Buttons -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-3">
+            <a href="#menu" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-dulce-600 hover:bg-dulce-700 text-white font-bold text-base shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
+              <i class="ph-bold ph-fork-knife text-lg"></i>
+              Explorar el Menú
+            </a>
+            <a href="#historia" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-amber-50 text-stone-800 font-bold text-base border border-stone-200 shadow-xs transition-all">
+              <i class="ph-bold ph-book-open-text text-lg text-dulce-600"></i>
+              Conocé a Facu
+            </a>
+          </div>
+
+          <!-- Social Proof / Local Trust -->
+          <div class="pt-4 flex items-center justify-center lg:justify-start gap-3 text-xs sm:text-sm text-stone-500">
+            <div class="flex -space-x-1.5">
+              <div class="w-7 h-7 rounded-full bg-amber-200 border-2 border-white flex items-center justify-center text-xs font-bold text-amber-800">🎂</div>
+              <div class="w-7 h-7 rounded-full bg-rose-200 border-2 border-white flex items-center justify-center text-xs font-bold text-rose-800">❤️</div>
+              <div class="w-7 h-7 rounded-full bg-emerald-200 border-2 border-white flex items-center justify-center text-xs font-bold text-emerald-800">⭐</div>
+            </div>
+            <span>Elegido a diario por vecinos y familias de la zona oeste</span>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Visual Hero Card -->
+        <div class="lg:col-span-5">
+          <div class="relative mx-auto max-w-sm sm:max-w-md">
+            
+            <!-- Glow background -->
+            <div class="absolute -inset-2 bg-gradient-to-tr from-dulce-400/30 to-amber-200/50 rounded-3xl blur-xl"></div>
+            
+            <!-- Card -->
+            <div class="relative bg-white rounded-3xl p-3 sm:p-4 shadow-xl border border-amber-100">
+              <div class="relative overflow-hidden rounded-2xl aspect-[4/3] bg-stone-100">
+                <img 
+                  src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80" 
+                  alt="Rogel Clásico artesanal de Facu" 
+                  class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-500"
+                  loading="eager"
+                >
+                <div class="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-md text-amber-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow">
+                  <span>⭐ EL GRAN CLÁSICO</span>
+                </div>
+              </div>
+
+              <div class="pt-4 pb-2 px-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 class="font-serif font-bold text-lg text-stone-900">Rogel Casero Especial</h3>
+                    <p class="text-xs text-stone-500">Masa crocante + Dulce de Leche Colonial + Merengue flameado</p>
+                  </div>
+                  <span class="text-xs font-semibold px-2 py-1 bg-amber-100 text-amber-800 rounded-lg whitespace-nowrap">
+                    10-12 porc.
+                  </span>
+                </div>
+                
+                <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
+                  <div class="text-xs text-stone-500">
+                    <span class="block text-[10px] uppercase font-bold text-stone-400">Hecho en</span>
+                    Hurlingham Centro
+                  </div>
+                  <button 
+                    onclick="addToCart('rogel-clasico')" 
+                    class="inline-flex items-center gap-1.5 text-xs font-bold bg-dulce-600 hover:bg-dulce-700 text-white px-3.5 py-2 rounded-lg shadow-sm transition-all"
+                  >
+                    <i class="ph-bold ph-plus"></i> Agregar al pedido
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORY FILTER PILLS (Sticky for mobile easy scrolling) -->
+  <section id="menu" class="sticky top-16 sm:top-20 z-30 bg-merengue/95 backdrop-blur-md py-3 border-b border-amber-200/50 shadow-xs">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
+        {% for cat in categories %}
+        <button 
+          type="button" 
+          onclick="filterCategory('{{ cat.id }}')" 
+          id="btn-cat-{{ cat.id }}" 
+          class="cat-pill whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all {% if loop.first %}bg-stone-900 text-white shadow-sm{% else %}bg-white text-stone-700 hover:bg-amber-100/70 border border-stone-200/70{% endif %}"
+        >
+          {{ cat.label }}
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS CATALOG (Mobile-first responsive grid) -->
+  <section class="py-8 sm:py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
+        <div>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+            Nuestras Delicias Artesanales
+          </h2>
+          <p class="text-xs sm:text-sm text-stone-600">
+            Elegí tus favoritos y armá tu pedido en un toque para coordinar por WhatsApp.
+          </p>
+        </div>
+        <span class="text-xs text-stone-500 font-medium bg-amber-100/60 text-amber-900 px-3 py-1 rounded-full self-start sm:self-auto">
+          🧁 Todo elaborado fresco a pedido
+        </span>
+      </div>
+
+      <!-- Grid of Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6" id="products-grid">
+        {% for p in products %}
+        <article 
+          class="product-card group bg-white rounded-2xl border border-stone-200/80 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 flex flex-col"
+          data-category="{{ p.category }}"
+          data-id="{{ p.id }}"
+        >
+          <!-- Image Container -->
+          <div class="relative aspect-[16/10] overflow-hidden bg-stone-100">
+            <img 
+              src="{{ p.image }}" 
+              alt="{{ p.name }}" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+              loading="lazy"
+            >
+            {% if p.badge %}
+            <span class="absolute top-3 left-3 px-2.5 py-1 bg-stone-900/85 backdrop-blur-xs text-amber-300 text-[11px] font-bold rounded-lg shadow-xs">
+              {{ p.badge }}
+            </span>
+            {% endif %}
+            <span class="absolute bottom-2 right-2 px-2 py-0.5 bg-white/90 backdrop-blur-xs text-stone-700 text-[10px] font-semibold rounded-md">
+              {{ p.portions }}
+            </span>
+          </div>
+
+          <!-- Card Content -->
+          <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+            <div class="space-y-1.5">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-dulce-700">
+                {{ p.category_label }}
+              </span>
+              <h3 class="font-serif font-bold text-lg text-stone-900 leading-snug group-hover:text-dulce-800 transition-colors">
+                {{ p.name }}
+              </h3>
+              <p class="text-xs sm:text-sm text-stone-600 font-normal leading-relaxed">
+                {{ p.description }}
+              </p>
+            </div>
+
+            <!-- Price and Action -->
+            <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between gap-3">
+              <div>
+                <span class="block text-[10px] text-stone-400 font-semibold uppercase">Precio</span>
+                <span class="text-lg sm:text-xl font-extrabold text-stone-900">
+                  ${{ "{:,.0f}".format(p.price).replace(",", ".") }}
+                </span>
+              </div>
+
+              <!-- Cart Controller for this item -->
+              <div class="flex items-center gap-1.5" id="cart-actions-{{ p.id }}">
+                <button 
+                  type="button"
+                  onclick="addToCart('{{ p.id }}')" 
+                  class="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl bg-dulce-600 hover:bg-dulce-700 text-white text-xs sm:text-sm font-bold shadow-xs active:scale-95 transition-all"
+                  aria-label="Agregar {{ p.name }} al pedido"
+                >
+                  <i class="ph-bold ph-plus"></i>
+                  <span>Agregar</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LA HISTORIA DE FACU SECTION -->
+  <section id="historia" class="py-12 sm:py-16 bg-white border-y border-amber-100">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="bg-gradient-to-br from-amber-50 to-orange-50/50 rounded-3xl p-6 sm:p-10 border border-amber-200/80 shadow-sm">
+        
+        <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8">
+          
+          <!-- Avatar / Photo placeholder -->
+          <div class="relative shrink-0">
+            <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden shadow-md border-4 border-white bg-amber-100 flex items-center justify-center">
+              <span class="text-6xl select-none">👨‍🍳</span>
+            </div>
+            <div class="absolute -bottom-2 -right-2 bg-dulce-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-xs">
+              20+ años
+            </div>
+          </div>
+
+          <!-- Story Text -->
+          <div class="space-y-3 text-center md:text-left">
+            <div class="inline-block text-xs font-bold uppercase tracking-wider text-dulce-700 bg-amber-100 px-2.5 py-1 rounded-md">
+              Corazón de Hurlingham
+            </div>
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
+              Facundo Juárez Downes, "Facu de las tortas"
+            </h2>
+            <p class="text-sm sm:text-base text-stone-700 leading-relaxed">
+              Hace más de dos décadas que Facu sale con su canasta a recorrer los comercios, escuelas y hogares de Hurlingham. Su historia de vida es un ejemplo de esfuerzo, resiliencia y amor por el oficio de la repostería tradicional.
+            </p>
+            <p class="text-sm sm:text-base text-stone-700 leading-relaxed italic">
+              "Cada torta está hecha como en casa: sin conservantes, con el mejor dulce de leche y con el cariño de siempre para compartir en familia."
+            </p>
+            <div class="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs font-semibold text-stone-600">
+              <span class="flex items-center gap-1.5"><i class="ph-fill ph-check-circle text-emerald-600 text-sm"></i> Recetas 100% Caseras</span>
+              <span class="flex items-center gap-1.5"><i class="ph-fill ph-check-circle text-emerald-600 text-sm"></i> Calidad de primera</span>
+              <span class="flex items-center gap-1.5"><i class="ph-fill ph-check-circle text-emerald-600 text-sm"></i> Orgullo local</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO PEDIR EN 3 PASOS -->
+  <section id="como-pedir" class="py-12 sm:py-16">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+      
+      <span class="text-xs font-bold uppercase tracking-wider text-dulce-700">Fácil y Rápido</span>
+      <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-8">
+        ¿Cómo hacer tu pedido?
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Step 1 -->
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-xs text-left relative">
+          <div class="w-10 h-10 rounded-xl bg-dulce-100 text-dulce-800 font-bold flex items-center justify-center text-lg mb-4">
+            1
+          </div>
+          <h3 class="font-serif font-bold text-lg text-stone-900 mb-1">Elegí tus delicias</h3>
+          <p class="text-xs sm:text-sm text-stone-600">
+            Navegá el menú, agregá las tortas, tartas o porciones que más te gusten al carrito.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-xs text-left relative">
+          <div class="w-10 h-10 rounded-xl bg-dulce-100 text-dulce-800 font-bold flex items-center justify-center text-lg mb-4">
+            2
+          </div>
+          <h3 class="font-serif font-bold text-lg text-stone-900 mb-1">Enviá por WhatsApp</h3>
+          <p class="text-xs sm:text-sm text-stone-600">
+            Al tocar pedir, se abre WhatsApp con el mensaje ya armado con tu detalle y total para que no tengas que escribir nada.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-xs text-left relative">
+          <div class="w-10 h-10 rounded-xl bg-dulce-100 text-dulce-800 font-bold flex items-center justify-center text-lg mb-4">
+            3
+          </div>
+          <h3 class="font-serif font-bold text-lg text-stone-900 mb-1">Coordinamos y disfrutás</h3>
+          <p class="text-xs sm:text-sm text-stone-600">
+            Facu te confirma el pedido, coordinan fecha/horario de entrega en Hurlingham y el medio de pago.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COBERTURA & MEDIOS DE PAGO -->
+  <section class="py-8 bg-amber-50/70 border-t border-amber-200/60">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        
+        <!-- Cobertura -->
+        <div class="bg-white p-5 rounded-xl border border-amber-200/70 shadow-xs flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl shrink-0">
+            <i class="ph-bold ph-moped"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-stone-900 text-sm">Zona de entregas y puntos de encuentro</h4>
+            <p class="text-xs text-stone-600 mt-1">
+              Hurlingham Centro, Villa Tesei, William Morris y puntos de encuentro a coordinar en Zona Oeste.
+            </p>
+          </div>
+        </div>
+
+        <!-- Pagos -->
+        <div class="bg-white p-5 rounded-xl border border-amber-200/70 shadow-xs flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-xl shrink-0">
+            <i class="ph-bold ph-credit-card"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-stone-900 text-sm">Medios de pago aceptados</h4>
+            <p class="text-xs text-stone-600 mt-1">
+              Mercado Pago, transferencia por alias/CBU o efectivo al recibir tu pedido.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS VECINALES -->
+  <section class="py-12 sm:py-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <span class="text-xs font-bold uppercase tracking-wider text-dulce-700">La voz de los clientes</span>
+      <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900 mt-1 mb-8">
+        El cariño del barrio
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+        <div class="bg-white p-4 sm:p-5 rounded-xl border border-stone-200/70 shadow-xs space-y-2">
+          <div class="text-amber-500 text-sm">★★★★★</div>
+          <p class="text-xs sm:text-sm text-stone-700 italic">"El mejor Rogel de toda la zona oeste sin ninguna duda. Dulce de leche abundante y el merengue perfecto."</p>
+          <span class="block text-xs font-bold text-stone-900">— Mariana, vecina de Hurlingham</span>
+        </div>
+        <div class="bg-white p-4 sm:p-5 rounded-xl border border-stone-200/70 shadow-xs space-y-2">
+          <div class="text-amber-500 text-sm">★★★★★</div>
+          <p class="text-xs sm:text-sm text-stone-700 italic">"Facu siempre con su mejor sonrisa y la tarta de coco calentita y fresca. No puede faltar en los cumples familiares."</p>
+          <span class="block text-xs font-bold text-stone-900">— Roberto G., Villa Tesei</span>
+        </div>
+        <div class="bg-white p-4 sm:p-5 rounded-xl border border-stone-200/70 shadow-xs space-y-2">
+          <div class="text-amber-500 text-sm">★★★★★</div>
+          <p class="text-xs sm:text-sm text-stone-700 italic">"Una persona de oro y un pastelero de primera. Todo súper casero y abundante. 100% recomendado."</p>
+          <span class="block text-xs font-bold text-stone-900">— Laura M., Hurlingham</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="mt-auto bg-stone-900 text-stone-400 py-10 border-t border-stone-800 text-xs">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <div class="space-y-1">
+        <span class="font-serif text-lg font-bold text-white block">Facu de las Tortas</span>
+        <p class="text-stone-400">Pastelería artesanal tradicional • Hurlingham, Buenos Aires</p>
+        <p class="text-stone-500 text-[11px]">Facundo Juárez Downes • Tel: {{ business.phone_display }}</p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="{{ business.instagram_url }}" target="_blank" rel="noopener" class="text-stone-300 hover:text-white text-xl p-2 rounded-lg bg-stone-800 hover:bg-stone-700 transition-colors" title="Instagram">
+          <i class="ph-bold ph-instagram-logo"></i>
+        </a>
+        <a href="{{ business.tiktok_url }}" target="_blank" rel="noopener" class="text-stone-300 hover:text-white text-xl p-2 rounded-lg bg-stone-800 hover:bg-stone-700 transition-colors" title="TikTok">
+          <i class="ph-bold ph-tiktok-logo"></i>
+        </a>
+        <a href="https://wa.me/{{ business.phone_raw }}" target="_blank" rel="noopener" class="text-stone-300 hover:text-emerald-400 text-xl p-2 rounded-lg bg-stone-800 hover:bg-stone-700 transition-colors" title="WhatsApp">
+          <i class="ph-bold ph-whatsapp-logo"></i>
+        </a>
+      </div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 mt-8 pt-6 border-t border-stone-800/80 text-center text-stone-500 text-[11px]">
+      Desarrollado con dedicación para Facundo Juárez Downes • Hurlingham
+    </div>
+  </footer>
+
+  <!-- STICKY MOBILE BOTTOM BAR (CART TRIGGER) -->
+  <div id="sticky-cart-bar" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-stone-200 p-3 transform translate-y-full transition-transform duration-300 shadow-2xl flex items-center justify-between gap-3 max-w-xl mx-auto rounded-t-2xl sm:bottom-4 sm:inset-x-4 sm:rounded-2xl sm:border">
+    <div class="flex items-center gap-2.5 pl-1">
+      <div class="w-10 h-10 rounded-xl bg-dulce-100 text-dulce-900 flex items-center justify-center font-bold text-lg relative">
+        <i class="ph-bold ph-shopping-bag"></i>
+        <span id="cart-badge-count" class="absolute -top-1.5 -right-1.5 bg-dulce-700 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-white">0</span>
+      </div>
+      <div>
+        <span class="block text-[11px] text-stone-500 font-medium">Total estimado</span>
+        <span id="cart-bar-total" class="font-extrabold text-stone-900 text-base leading-tight">$0</span>
+      </div>
+    </div>
+    
+    <button 
+      type="button" 
+      onclick="openCartDrawer()" 
+      class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all active:scale-95"
+    >
+      <span>Ver pedido</span>
+      <i class="ph-bold ph-arrow-right"></i>
+    </button>
+  </div>
+
+  <!-- CART MODAL / BOTTOM SHEET -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs opacity-0 pointer-events-none transition-opacity duration-300 flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div 
+      id="cart-drawer-panel" 
+      class="w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-3xl max-h-[90vh] flex flex-col shadow-2xl transform translate-y-full sm:translate-y-4 transition-transform duration-300 overflow-hidden"
+    >
+      
+      <!-- Drawer Header -->
+      <div class="p-4 sm:p-5 border-b border-stone-100 flex items-center justify-between bg-amber-50/50">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-full bg-dulce-100 text-dulce-800 flex items-center justify-center text-lg">
+            🍰
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-stone-900">Tu Pedido</h3>
+            <p class="text-xs text-stone-500">Se enviará directo al WhatsApp de Facu</p>
+          </div>
+        </div>
+        <button 
+          type="button" 
+          onclick="closeCartDrawer()" 
+          class="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition-colors text-lg"
+          aria-label="Cerrar pedido"
+        >
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Body: Items list -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1 divide-y divide-stone-100" id="cart-items-container">
+        <!-- Will be populated dynamically via JavaScript -->
+      </div>
+
+      <!-- Customer Details Form (Simple & Mobile friendly) -->
+      <div class="px-4 sm:px-5 py-3 bg-stone-50/70 border-t border-stone-100 space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">Tu nombre (opcional)</label>
+            <input type="text" id="order-customer-name" placeholder="Ej: Marcela" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-stone-800 focus:outline-none focus:ring-2 focus:ring-dulce-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">Modalidad</label>
+            <select id="order-delivery-type" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-stone-800 focus:outline-none focus:ring-2 focus:ring-dulce-500">
+              <option value="Entrega en Hurlingham">Envío a domicilio (Hurlingham)</option>
+              <option value="Punto de encuentro a coordinar">Punto de encuentro a coordinar</option>
+              <option value="Retiro a convenir">Retiro a convenir</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-stone-700 text-xs mb-1">Fecha deseada o aclaraciones (opcional)</label>
+          <input type="text" id="order-notes" placeholder="Ej: Para el sábado al mediodía / Cumpleaños" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-xs text-stone-800 focus:outline-none focus:ring-2 focus:ring-dulce-500">
+        </div>
+      </div>
+
+      <!-- Drawer Footer: Summary & WhatsApp CTA -->
+      <div class="p-4 sm:p-5 border-t border-stone-100 bg-white space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-semibold text-stone-600">Total a abonar:</span>
+          <span id="drawer-total-amount" class="text-2xl font-black text-stone-900">$0</span>
+        </div>
+
+        <button 
+          type="button" 
+          onclick="submitOrderToWhatsApp()" 
+          id="btn-send-whatsapp" 
+          class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+        >
+          <i class="ph-fill ph-whatsapp-logo text-2xl"></i>
+          <span>Confirmar y enviar por WhatsApp</span>
+        </button>
+
+        <p class="text-[11px] text-center text-stone-400">
+          Al tocar el botón se abrirá WhatsApp con el mensaje pre-cargado listo para enviar.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK WHATSAPP BUTTON (Always accessible) -->
+  <a 
+    href="https://wa.me/{{ business.phone_raw }}?text=¡Hola%20Facu!%20Te%20escribo%20desde%20la%20página%20web" 
+    target="_blank" 
+    rel="noopener" 
+    class="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-30 w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center text-3xl shadow-xl hover:scale-105 transition-all group"
+    title="Chatear con Facu"
+    aria-label="Abrir chat de WhatsApp con Facundo"
+  >
+    <i class="ph-fill ph-whatsapp-logo"></i>
+    <span class="sr-only">Contactar por WhatsApp</span>
+  </a>
+
+  <!-- PRODUCTS DATA EMBEDDED SAFELY FOR JS -->
+  <script>
+    window.PRODUCTS_CATALOG = {{ products | tojson }};
+    window.BUSINESS_CONFIG = {{ business | tojson }};
+  </script>
+
+  <!-- APP JAVASCRIPT -->
+  <script src="/static/js/app.js"></script>
+
+</body>
+</html>

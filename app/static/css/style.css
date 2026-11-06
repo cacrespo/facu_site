@@ -1,0 +1,38 @@
+/* Custom Utility Styles for Facu de las Tortas */
+
+/* Hide scrollbars for horizontal categories scrolling while keeping functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom smooth animations */
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop {
+  animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Touch friendly adjustments */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Subtle image load transition */
+img {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Mobile bottom sheet safe area */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  #sticky-cart-bar {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
+}
