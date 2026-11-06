@@ -1,13 +1,29 @@
 import json
+import os
+import hashlib
+import re
+import time
 import urllib.parse
 from pathlib import Path
 from typing import List, Optional
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request, HTTPException, Form, UploadFile, File, Response
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 BASE_DIR = Path(__file__).resolve().parent
+
+# Configuración de seguridad para el Administrador
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "facu2024")
+SECRET_KEY = os.getenv("SECRET_KEY", "facu-super-secret-key-2024")
+
+def get_admin_token() -> str:
+    return hashlib.sha256(f"{ADMIN_PASSWORD}-{SECRET_KEY}".encode()).hexdigest()
+
+def is_admin_authenticated(request: Request) -> bool:
+    token = request.cookies.get("admin_session")
+    return token == get_admin_token()
 
 app = FastAPI(
     title="Facu de las Tortas - Hurlingham",
@@ -45,6 +61,12 @@ BUSINESS_INFO = {
     },
 }
 
+CATEGORY_LABELS = {
+    "destacados": "⭐ Especialidades",
+    "tartas": "🥧 Tartas Dulces",
+    "tortas": "🎂 Tortas Enteras",
+    "porciones": "🍰 Porciones & Merienda",
+}
 
 def load_products():
     data_path = BASE_DIR / "data" / "products.json"
@@ -52,6 +74,11 @@ def load_products():
         return []
     with open(data_path, "r", encoding="utf-8") as f:
         return json.load(f)
+
+def save_products(products: list):
+    data_path = BASE_DIR / "data" / "products.json"
+    with open(data_path, "w", encoding="utf-8") as f:
+        json.dump(products, f, ensure_ascii=False, indent=2)
 
 
 @app.api_route("/", methods=["GET", "HEAD"])
@@ -156,3 +183,164 @@ def create_whatsapp_link(order: OrderRequest):
 @app.get("/health")
 def health_check():
     return {"status": "ok", "app": "Facu de las Tortas", "version": "1.0.0"}
+
+
+# ==========================================
+# RUTAS DE ADMINISTRACIÓN (PANEL DE CONTROL)
+# ==========================================
+
+@app.get("/admin/login")
+def admin_login_page(request: Request):
+    if is_admin_authenticated(request):
+        return RedirectResponse("/admin", status_code=303)
+    return templates.TemplateResponse(
+        request=request,
+        name="admin_login.html",
+        context={"error": None},
+    )
+
+
+@app.post("/admin/login")
+def admin_login_submit(request: Request, password: str = Form(...)):
+    if password == ADMIN_PASSWORD:
+        response = RedirectResponse("/admin", status_code=303)
+        response.set_cookie(
+            key="admin_session",
+            value=get_admin_token(),
+            httponly=True,
+            max_age=60 * 60 * 24 * 30,  # 30 días
+            samesite="lax",
+        )
+        return response
+    return templates.TemplateResponse(
+        request=request,
+        name="admin_login.html",
+        context={"error": "Contraseña incorrecta. Por favor volvé a intentar."},
+        status_code=401,
+    )
+
+
+@app.get("/admin/logout")
+def admin_logout():
+    response = RedirectResponse("/admin/login", status_code=303)
+    response.delete_cookie("admin_session")
+    return response
+
+
+@app.get("/admin")
+def admin_dashboard(request: Request):
+    if not is_admin_authenticated(request):
+        return RedirectResponse("/admin/login", status_code=303)
+
+    products = load_products()
+    saved = request.query_params.get("saved") == "1"
+    deleted = request.query_params.get("deleted") == "1"
+
+    return templates.TemplateResponse(
+        request=request,
+        name="admin.html",
+        context={
+            "products": products,
+            "saved": saved,
+            "deleted": deleted,
+            "categories": CATEGORY_LABELS,
+        },
+    )
+
+
+@app.post("/admin/products/save")
+async def admin_save_product(
+    request: Request,
+    id: Optional[str] = Form(None),
+    name: str = Form(...),
+    category: str = Form(...),
+    price: float = Form(...),
+    portions: Optional[str] = Form(""),
+    badge: Optional[str] = Form(""),
+    description: str = Form(...),
+    image_url: Optional[str] = Form(None),
+    image_file: Optional[UploadFile] = File(None),
+    is_featured: Optional[str] = Form(None),
+):
+    if not is_admin_authenticated(request):
+        raise HTTPException(status_code=403, detail="No autorizado")
+
+    products = load_products()
+    existing = None
+    if id:
+        for p in products:
+            if p.get("id") == id:
+                existing = p
+                break
+
+    # Determinar imagen
+    final_image = existing.get("image") if existing else "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80"
+
+    # Si se subió un archivo nuevo
+    if image_file and image_file.filename and len(image_file.filename.strip()) > 0:
+        filename = image_file.filename.strip().lower()
+        ext = Path(filename).suffix
+        if not ext:
+            ext = ".jpg"
+        slug_base = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+        clean_name = f"{slug_base}-{int(time.time())}{ext}"
+        upload_dir = BASE_DIR / "static" / "img" / "uploads"
+        upload_dir.mkdir(parents=True, exist_ok=True)
+        file_path = upload_dir / clean_name
+
+        content = await image_file.read()
+        if len(content) > 0:
+            with open(file_path, "wb") as f:
+                f.write(content)
+            final_image = f"/static/img/uploads/{clean_name}"
+    elif image_url and image_url.strip():
+        final_image = image_url.strip()
+
+    category_label = CATEGORY_LABELS.get(category, "Especialidades")
+    is_feat_bool = is_featured in ("true", "1", "on")
+
+    if existing:
+        existing["name"] = name.strip()
+        existing["category"] = category
+        existing["category_label"] = category_label
+        existing["price"] = price
+        existing["portions"] = portions.strip() if portions else ""
+        existing["badge"] = badge.strip() if badge else ""
+        existing["description"] = description.strip()
+        existing["image"] = final_image
+        existing["is_featured"] = is_feat_bool
+    else:
+        new_id = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or f"prod-{int(time.time())}"
+        suffix = 1
+        base_new_id = new_id
+        while any(p.get("id") == new_id for p in products):
+            new_id = f"{base_new_id}-{suffix}"
+            suffix += 1
+
+        new_product = {
+            "id": new_id,
+            "name": name.strip(),
+            "category": category,
+            "category_label": category_label,
+            "badge": badge.strip() if badge else "",
+            "description": description.strip(),
+            "price": price,
+            "portions": portions.strip() if portions else "",
+            "image": final_image,
+            "is_featured": is_feat_bool,
+        }
+        products.append(new_product)
+
+    save_products(products)
+    return RedirectResponse("/admin?saved=1", status_code=303)
+
+
+@app.post("/admin/products/delete/{product_id}")
+def admin_delete_product(request: Request, product_id: str):
+    if not is_admin_authenticated(request):
+        raise HTTPException(status_code=403, detail="No autorizado")
+
+    products = load_products()
+    products = [p for p in products if p.get("id") != product_id]
+    save_products(products)
+    return RedirectResponse("/admin?deleted=1", status_code=303)

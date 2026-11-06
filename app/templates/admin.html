@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración de Menú | Juárez Downes Pastelería</title>
+  <link rel="icon" type="image/jpeg" href="/static/img/logo.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-[#fcf4e9] text-stone-800 font-sans min-h-screen flex flex-col pb-16">
+
+  <!-- Top retro stripes -->
+  <div class="h-2 w-full patisserie-stripes"></div>
+
+  <!-- ADMIN NAVBAR -->
+  <header class="bg-white border-b border-stone-200 sticky top-0 z-30 shadow-2xs">
+    <div class="max-w-7xl mx-auto px-4 h-16 sm:h-20 flex items-center justify-between">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-[#fcf4e9] border border-[#5f889a] flex items-center justify-center text-[#bd3742] shrink-0 font-serif font-black text-sm">
+          JDP♥
+        </div>
+        <div>
+          <span class="font-serif font-bold text-lg sm:text-xl text-stone-900 leading-tight block">
+            Panel de Catálogo
+          </span>
+          <span class="text-xs text-stone-500 font-medium hidden sm:inline">
+            Modificá precios, nombres, descripciones y fotos
+          </span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-4">
+        <a 
+          href="/" 
+          target="_blank" 
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-700 hover:text-stone-900 bg-stone-100 hover:bg-stone-200 transition-colors"
+        >
+          <i class="ph-bold ph-arrow-square-out text-sm"></i>
+          <span class="hidden sm:inline">Ver sitio web</span>
+        </a>
+
+        <a 
+          href="/admin/logout" 
+          class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-500 hover:text-red-700 transition-colors"
+          title="Cerrar sesión"
+        >
+          <i class="ph-bold ph-sign-out text-base"></i>
+          <span class="hidden sm:inline">Salir</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
+
+    <!-- Flash message toasts -->
+    {% if saved %}
+    <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold flex items-center justify-between shadow-xs animate-pop">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-check-circle text-xl text-emerald-600"></i>
+        <span>¡Producto guardado exitosamente! Los cambios ya están visibles en la web.</span>
+      </div>
+      <button onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-900 text-lg">×</button>
+    </div>
+    {% endif %}
+
+    {% if deleted %}
+    <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-sm font-semibold flex items-center justify-between shadow-xs animate-pop">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-trash text-xl text-amber-600"></i>
+        <span>El producto fue eliminado del catálogo.</span>
+      </div>
+      <button onclick="this.parentElement.remove()" class="text-amber-600 hover:text-amber-900 text-lg">×</button>
+    </div>
+    {% endif %}
+
+    <!-- Top Action Bar -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-stone-200 shadow-2xs">
+      <div>
+        <h2 class="font-serif font-bold text-xl text-stone-900">
+          Tortas y Delicias en el Menú ({{ products|length }})
+        </h2>
+        <p class="text-xs text-stone-500 mt-0.5">
+          Tocá "Editar" en cualquier producto para cambiar precio, descripción, nombre o foto.
+        </p>
+      </div>
+
+      <button 
+        type="button" 
+        onclick="openProductModal()" 
+        class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#bd3742] hover:bg-[#a32934] text-white font-bold text-sm shadow-sm hover:shadow transition-all active:scale-95"
+      >
+        <i class="ph-bold ph-plus text-base"></i>
+        <span>+ Agregar Nuevo Producto</span>
+      </button>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {% for p in products %}
+      <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between">
+        
+        <div>
+          <!-- Image with Badge -->
+          <div class="relative aspect-[16/10] bg-stone-100 overflow-hidden">
+            <img 
+              src="{{ p.image }}" 
+              alt="{{ p.name }}" 
+              class="w-full h-full object-cover" 
+              onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80'"
+            >
+            {% if p.badge %}
+            <span class="absolute top-2.5 left-2.5 bg-stone-900/85 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded shadow">
+              {{ p.badge }}
+            </span>
+            {% endif %}
+            <span class="absolute bottom-2 right-2 bg-white/90 text-stone-700 text-[10px] font-semibold px-2 py-0.5 rounded shadow-2xs">
+              {{ p.portions }}
+            </span>
+          </div>
+
+          <!-- Body -->
+          <div class="p-4 space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[#5f889a] block">
+                  {{ p.category_label }}
+                </span>
+                <h3 class="font-serif font-bold text-lg text-stone-900 leading-snug">
+                  {{ p.name }}
+                </h3>
+              </div>
+              <span class="text-lg font-extrabold text-[#bd3742] whitespace-nowrap">
+                ${{ "{:,.0f}".format(p.price).replace(",", ".") }}
+              </span>
+            </div>
+
+            <p class="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+              {{ p.description }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="p-3 bg-stone-50 border-t border-stone-100 flex items-center justify-between gap-2">
+          <span class="text-[11px] text-stone-400 font-mono">ID: {{ p.id }}</span>
+          <div class="flex items-center gap-2">
+            <button 
+              type="button" 
+              onclick='editProduct({{ p | tojson }})'
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-all shadow-2xs"
+            >
+              <i class="ph-bold ph-pencil-simple"></i>
+              <span>Editar</span>
+            </button>
+            <form method="POST" action="/admin/products/delete/{{ p.id }}" onsubmit="return confirm('¿Seguro que querés eliminar «{{ p.name }}» del menú?')">
+              <button 
+                type="submit" 
+                class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-stone-400 hover:text-red-700 hover:bg-red-50 transition-colors" 
+                title="Eliminar producto"
+              >
+                <i class="ph-bold ph-trash text-base"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+  </main>
+
+  <!-- PRODUCT EDIT / CREATE MODAL -->
+  <div id="product-modal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div id="product-modal-panel" class="w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-stone-200 max-h-[92vh] flex flex-col overflow-hidden transform scale-95 transition-transform duration-200">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-stone-100 flex items-center justify-between bg-[#fcf4e9]/60">
+        <div>
+          <h3 id="modal-title" class="font-serif font-bold text-xl text-stone-900">
+            Editar Producto
+          </h3>
+          <p class="text-xs text-stone-500">
+            Los cambios se guardan al instante en la página web.
+          </p>
+        </div>
+        <button 
+          type="button" 
+          onclick="closeProductModal()" 
+          class="w-9 h-9 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition-colors text-lg"
+        >
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Form) -->
+      <form id="product-form" method="POST" action="/admin/products/save" enctype="multipart/form-data" class="overflow-y-auto p-5 sm:p-6 space-y-4 flex-1">
+        
+        <input type="hidden" id="form-id" name="id" value="">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Name -->
+          <div class="sm:col-span-2">
+            <label for="form-name" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Nombre de la torta / delicia *
+            </label>
+            <input 
+              type="text" 
+              id="form-name" 
+              name="name" 
+              required 
+              placeholder="Ej: Rogel Clásico de Facu" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#bd3742] text-sm"
+            >
+          </div>
+
+          <!-- Category -->
+          <div>
+            <label for="form-category" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Categoría *
+            </label>
+            <select 
+              id="form-category" 
+              name="category" 
+              required 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#bd3742] text-sm bg-white"
+            >
+              <option value="destacados">⭐ Especialidades</option>
+              <option value="tartas">🥧 Tartas Dulces</option>
+              <option value="tortas">🎂 Tortas Enteras</option>
+              <option value="porciones">🍰 Porciones & Merienda</option>
+            </select>
+          </div>
+
+          <!-- Price -->
+          <div>
+            <label for="form-price" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Precio en Pesos ($ ARS) *
+            </label>
+            <div class="relative">
+              <span class="absolute left-3.5 top-2.5 text-stone-400 font-bold">$</span>
+              <input 
+                type="number" 
+                id="form-price" 
+                name="price" 
+                required 
+                min="0" 
+                step="100" 
+                placeholder="18500" 
+                class="w-full pl-8 pr-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 font-bold focus:outline-none focus:ring-2 focus:ring-[#bd3742] text-sm"
+              >
+            </div>
+          </div>
+
+          <!-- Portions -->
+          <div>
+            <label for="form-portions" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Rendimiento / Porciones
+            </label>
+            <input 
+              type="text" 
+              id="form-portions" 
+              name="portions" 
+              placeholder="Ej: Rinde 10 a 12 porciones" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#bd3742] text-sm"
+            >
+          </div>
+
+          <!-- Badge -->
+          <div>
+            <label for="form-badge" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Cartelito / Distintivo (opcional)
+            </label>
+            <input 
+              type="text" 
+              id="form-badge" 
+              name="badge" 
+              placeholder="Ej: La estrella de Facu ⭐" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#bd3742] text-sm"
+            >
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="form-description" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+            Descripción de los ingredientes y sabor *
+          </label>
+          <textarea 
+            id="form-description" 
+            name="description" 
+            rows="3" 
+            required 
+            placeholder="Capas finas y crocantes intercaladas con abundante dulce de leche repostero colonial..." 
+            class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#bd3742] text-sm leading-relaxed"
+          ></textarea>
+        </div>
+
+        <!-- PHOTO SECTION -->
+        <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-stone-800 uppercase tracking-wider">
+              Fotografía de la Torta
+            </label>
+            <span class="text-[11px] text-stone-500">Podés subir un archivo o usar una URL</span>
+          </div>
+
+          <!-- Current Image Preview -->
+          <div class="flex items-center gap-3">
+            <div class="w-16 h-16 rounded-xl overflow-hidden border border-stone-300 bg-stone-200 shrink-0">
+              <img id="form-img-preview" src="" alt="Vista previa" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 space-y-2">
+              <div>
+                <label class="block text-[11px] font-semibold text-stone-600 mb-0.5">
+                  Subir foto desde tu celular o computadora:
+                </label>
+                <input 
+                  type="file" 
+                  id="form-image-file" 
+                  name="image_file" 
+                  accept="image/*" 
+                  onchange="previewUploadedImage(this)" 
+                  class="block w-full text-xs text-stone-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-stone-900 file:text-white hover:file:bg-stone-800 cursor-pointer"
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Or paste URL -->
+          <div>
+            <label for="form-image-url" class="block text-[11px] font-semibold text-stone-600 mb-0.5">
+              O bien pegar enlace (URL) de la imagen:
+            </label>
+            <input 
+              type="text" 
+              id="form-image-url" 
+              name="image_url" 
+              placeholder="https://..." 
+              oninput="previewUrlImage(this.value)" 
+              class="w-full px-3 py-2 rounded-lg border border-stone-300 text-stone-800 text-xs focus:outline-none focus:ring-2 focus:ring-[#bd3742]"
+            >
+          </div>
+        </div>
+
+        <!-- Featured checkbox -->
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="form-is-featured" name="is_featured" value="true" class="h-4 w-4 rounded border-stone-300 text-[#bd3742] focus:ring-[#bd3742]">
+          <label for="form-is-featured" class="text-xs font-semibold text-stone-700 cursor-pointer select-none">
+            ⭐ Marcar como producto destacado en la portada
+          </label>
+        </div>
+
+        <!-- Submit Footer -->
+        <div class="pt-4 border-t border-stone-100 flex items-center justify-end gap-3">
+          <button 
+            type="button" 
+            onclick="closeProductModal()" 
+            class="px-4 py-2.5 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-100 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="px-6 py-2.5 rounded-xl bg-[#bd3742] hover:bg-[#a32934] text-white font-bold text-sm shadow-md transition-all active:scale-95"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    // Modal Helpers
+    function openProductModal() {
+      document.getElementById('modal-title').textContent = 'Agregar Nuevo Producto';
+      document.getElementById('form-id').value = '';
+      document.getElementById('form-name').value = '';
+      document.getElementById('form-category').value = 'destacados';
+      document.getElementById('form-price').value = '';
+      document.getElementById('form-portions').value = '';
+      document.getElementById('form-badge').value = '';
+      document.getElementById('form-description').value = '';
+      document.getElementById('form-image-url').value = '';
+      document.getElementById('form-image-file').value = '';
+      document.getElementById('form-img-preview').src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80';
+      document.getElementById('form-is-featured').checked = false;
+
+      showModal();
+    }
+
+    function editProduct(product) {
+      document.getElementById('modal-title').textContent = 'Editar «' + product.name + '»';
+      document.getElementById('form-id').value = product.id || '';
+      document.getElementById('form-name').value = product.name || '';
+      document.getElementById('form-category').value = product.category || 'destacados';
+      document.getElementById('form-price').value = product.price || '';
+      document.getElementById('form-portions').value = product.portions || '';
+      document.getElementById('form-badge').value = product.badge || '';
+      document.getElementById('form-description').value = product.description || '';
+      document.getElementById('form-image-url').value = product.image || '';
+      document.getElementById('form-image-file').value = '';
+      document.getElementById('form-img-preview').src = product.image || '';
+      document.getElementById('form-is-featured').checked = Boolean(product.is_featured);
+
+      showModal();
+    }
+
+    function showModal() {
+      const modal = document.getElementById('product-modal');
+      const panel = document.getElementById('product-modal-panel');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      panel.classList.remove('scale-95');
+      panel.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal() {
+      const modal = document.getElementById('product-modal');
+      const panel = document.getElementById('product-modal-panel');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100');
+      panel.classList.add('scale-95');
+      panel.classList.remove('scale-100');
+      document.body.style.overflow = '';
+    }
+
+    function previewUploadedImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('form-img-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function previewUrlImage(url) {
+      if (url && url.startsWith('http')) {
+        document.getElementById('form-img-preview').src = url;
+      }
+    }
+
+    // Close on backdrop click
+    document.getElementById('product-modal')?.addEventListener('click', (e) => {
+      if (e.target.id === 'product-modal') {
+        closeProductModal();
+      }
+    });
+  </script>
+
+</body>
+</html>
