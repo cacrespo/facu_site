@@ -87,36 +87,24 @@
         </div>
       </a>
 
-      <!-- Desktop Nav & Socials -->
-      <div class="flex items-center gap-2 sm:gap-4">
-        <a href="#menu" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-stone-700 hover:text-dulce-700 hover:bg-amber-50 rounded-full transition-colors">
-          <i class="ph-bold ph-book-open"></i> Menú
+      <!-- Clean Nav & Socials -->
+      <nav class="flex items-center gap-3 sm:gap-6">
+        <a href="#menu" class="hidden sm:inline-block text-sm font-semibold text-stone-700 hover:text-dulce-700 transition-colors">
+          Menú
         </a>
-        <a href="#historia" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-stone-700 hover:text-dulce-700 hover:bg-amber-50 rounded-full transition-colors">
-          <i class="ph-bold ph-heart"></i> La Historia
+        <a href="#historia" class="hidden sm:inline-block text-sm font-semibold text-stone-700 hover:text-dulce-700 transition-colors">
+          Historia
         </a>
-        <a href="#como-pedir" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-semibold text-stone-700 hover:text-dulce-700 hover:bg-amber-50 rounded-full transition-colors">
-          <i class="ph-bold ph-shopping-bag"></i> Cómo pedir
-        </a>
-
-        <!-- Support Facu Heart Button -->
-        <a href="#apoyo" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/80 rounded-full transition-colors">
+        <a href="#apoyo" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rose-700 hover:text-rose-800 transition-colors">
           <i class="ph-fill ph-heart text-rose-500"></i>
-          <span class="hidden sm:inline">Acompañar a Facu</span>
-          <span class="sm:hidden">Apoyar</span>
+          <span>Acompañar a Facu</span>
         </a>
 
         <!-- Instagram Link -->
-        <a href="{{ business.instagram_url }}" target="_blank" rel="noopener" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-stone-100 hover:bg-amber-100 text-stone-700 hover:text-pink-600 flex items-center justify-center transition-colors text-lg" title="Instagram de Facu">
+        <a href="{{ business.instagram_url }}" target="_blank" rel="noopener" class="w-9 h-9 rounded-full bg-stone-100 hover:bg-amber-100 text-stone-700 hover:text-pink-600 flex items-center justify-center transition-colors text-lg" title="Instagram de Facu">
           <i class="ph-bold ph-instagram-logo"></i>
         </a>
-
-        <!-- WhatsApp Quick Link -->
-        <a href="https://wa.me/{{ business.phone_raw }}?text=¡Hola%20Facu!%20Te%20contacto%20desde%20la%20web" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-sm hover:shadow transition-all">
-          <i class="ph-fill ph-whatsapp-logo text-base sm:text-lg"></i>
-          <span class="hidden xs:inline">WhatsApp</span>
-        </a>
-      </div>
+      </nav>
     </div>
   </header>
 
@@ -141,89 +129,34 @@
             Las tortas y tartas artesanales de <strong class="text-stone-900 font-semibold">Facundo Juárez Downes</strong>. Ingredientes de primera, abundante dulce de leche y la pasión de toda una vida en cada porción.
           </p>
 
-          <!-- Badges highlight -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1 text-xs sm:text-sm text-stone-700">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-amber-200/80 font-medium shadow-xs">
-              ⭐ Rogel Inconfundible
-            </span>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-amber-200/80 font-medium shadow-xs">
-              🥥 Tartas de Coco & DDL
-            </span>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-amber-200/80 font-medium shadow-xs">
-              🍫 Brownies & Porciones
-            </span>
-          </div>
-
-          <!-- Hero Buttons -->
-          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-3">
-            <a href="#menu" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-dulce-600 hover:bg-dulce-700 text-white font-bold text-base shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
-              <i class="ph-bold ph-fork-knife text-lg"></i>
-              Explorar el Menú
+          <!-- Single Clean CTA -->
+          <div class="pt-1">
+            <a href="#menu" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-dulce-600 hover:bg-dulce-700 text-white font-bold text-sm sm:text-base shadow-sm hover:shadow transition-all active:scale-[0.98]">
+              <span>Ver Menú y Precios</span>
+              <i class="ph-bold ph-arrow-down"></i>
             </a>
-            <a href="#historia" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-amber-50 text-stone-800 font-bold text-base border border-stone-200 shadow-xs transition-all">
-              <i class="ph-bold ph-book-open-text text-lg text-dulce-600"></i>
-              Conocé a Facu
-            </a>
-          </div>
-
-          <!-- Social Proof / Local Trust -->
-          <div class="pt-4 flex items-center justify-center lg:justify-start gap-3 text-xs sm:text-sm text-stone-500">
-            <div class="flex -space-x-1.5">
-              <div class="w-7 h-7 rounded-full bg-amber-200 border-2 border-white flex items-center justify-center text-xs font-bold text-amber-800">🎂</div>
-              <div class="w-7 h-7 rounded-full bg-rose-200 border-2 border-white flex items-center justify-center text-xs font-bold text-rose-800">❤️</div>
-              <div class="w-7 h-7 rounded-full bg-emerald-200 border-2 border-white flex items-center justify-center text-xs font-bold text-emerald-800">⭐</div>
-            </div>
-            <span>Elegido a diario por vecinos y familias de la zona oeste</span>
           </div>
 
         </div>
 
-        <!-- Right Column: Visual Hero Card -->
+        <!-- Right Column: Visual Showcase (Clean, no buttons) -->
         <div class="lg:col-span-5">
           <div class="relative mx-auto max-w-sm sm:max-w-md">
-            
-            <!-- Glow background -->
-            <div class="absolute -inset-2 bg-gradient-to-tr from-dulce-400/30 to-amber-200/50 rounded-3xl blur-xl"></div>
-            
-            <!-- Card -->
-            <div class="relative bg-white rounded-3xl p-3 sm:p-4 shadow-xl border border-amber-100">
+            <div class="relative bg-white rounded-3xl p-3 shadow-md border border-amber-100 overflow-hidden group">
               <div class="relative overflow-hidden rounded-2xl aspect-[4/3] bg-stone-100">
                 <img 
                   src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80" 
                   alt="Rogel Clásico artesanal de Facu" 
-                  class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-500"
+                  class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   loading="eager"
                 >
-                <div class="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-md text-amber-300 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 shadow">
-                  <span>⭐ EL GRAN CLÁSICO</span>
+                <div class="absolute inset-0 bg-gradient-to-t from-stone-900/60 via-transparent to-transparent"></div>
+                <div class="absolute bottom-3 left-4 right-4 text-white">
+                  <span class="text-[11px] font-bold tracking-wider uppercase text-amber-300 block">Especialidad de la casa</span>
+                  <h3 class="font-serif font-bold text-lg leading-tight">Rogel Clásico Tradicional</h3>
+                  <p class="text-xs text-stone-200">Capas crocantes, dulce de leche colonial y merengue flameado</p>
                 </div>
               </div>
-
-              <div class="pt-4 pb-2 px-2">
-                <div class="flex items-start justify-between gap-2">
-                  <div>
-                    <h3 class="font-serif font-bold text-lg text-stone-900">Rogel Casero Especial</h3>
-                    <p class="text-xs text-stone-500">Masa crocante + Dulce de Leche Colonial + Merengue flameado</p>
-                  </div>
-                  <span class="text-xs font-semibold px-2 py-1 bg-amber-100 text-amber-800 rounded-lg whitespace-nowrap">
-                    10-12 porc.
-                  </span>
-                </div>
-                
-                <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
-                  <div class="text-xs text-stone-500">
-                    <span class="block text-[10px] uppercase font-bold text-stone-400">Hecho en</span>
-                    Hurlingham Centro
-                  </div>
-                  <button 
-                    onclick="addToCart('rogel-clasico')" 
-                    class="inline-flex items-center gap-1.5 text-xs font-bold bg-dulce-600 hover:bg-dulce-700 text-white px-3.5 py-2 rounded-lg shadow-sm transition-all"
-                  >
-                    <i class="ph-bold ph-plus"></i> Agregar al pedido
-                  </button>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
@@ -424,38 +357,25 @@
             </div>
 
             <!-- Alias Box with Tap to Copy -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-              <div class="flex-1 bg-white border border-stone-300 rounded-xl px-4 py-3 flex items-center justify-between gap-2 shadow-2xs">
-                <div>
-                  <span class="block text-[10px] uppercase font-bold text-stone-400">Alias de Mercado Pago</span>
-                  <span id="support-alias-text" class="font-mono font-black text-stone-900 text-sm sm:text-base tracking-wide select-all">{{ business.support.alias }}</span>
-                </div>
-                <button 
-                  type="button" 
-                  onclick="copySupportAlias()" 
-                  id="btn-copy-alias"
-                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-all active:scale-95 shadow-xs shrink-0"
-                  title="Copiar alias al portapapeles"
-                >
-                  <i class="ph-bold ph-copy text-sm"></i>
-                  <span id="btn-copy-alias-label">Copiar Alias</span>
-                </button>
+            <div class="bg-white border border-stone-300 rounded-xl px-4 py-3 flex items-center justify-between gap-3 shadow-2xs">
+              <div>
+                <span class="block text-[10px] uppercase font-bold text-stone-400">Alias de Mercado Pago</span>
+                <span id="support-alias-text" class="font-mono font-black text-stone-900 text-sm sm:text-base tracking-wide select-all">{{ business.support.alias }}</span>
               </div>
-
-              <!-- Send WhatsApp message of encouragement -->
-              <a 
-                href="https://wa.me/{{ business.phone_raw }}?text=¡Hola%20Facu!%20Te%20mandé%20una%20colaboración%20voluntaria%20de%20corazón%20para%20darte%20una%20mano%20con%20tus%20medicamentos.%20¡Un%20abrazo%20grande!" 
-                target="_blank" 
-                rel="noopener"
-                class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold shadow-xs transition-all active:scale-95 shrink-0"
+              <button 
+                type="button" 
+                onclick="copySupportAlias()" 
+                id="btn-copy-alias"
+                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-all active:scale-95 shadow-xs shrink-0"
+                title="Copiar alias al portapapeles"
               >
-                <i class="ph-fill ph-whatsapp-logo text-lg"></i>
-                <span>Avisarle a Facu por WhatsApp</span>
-              </a>
+                <i class="ph-bold ph-copy text-sm"></i>
+                <span id="btn-copy-alias-label">Copiar Alias</span>
+              </button>
             </div>
 
             <p class="text-[11px] text-stone-500 italic text-center sm:text-left">
-              💙 No hay montos mínimos ni compromisos: todo gesto de cariño es bienvenido y ayuda a cuidar a quien tanto nos endulza la vida.
+              💙 No hay montos mínimos ni compromisos: todo gesto de cariño es bienvenido. Si deseás, podés avisarle por <a href="https://wa.me/{{ business.phone_raw }}?text=¡Hola%20Facu!%20Te%20mandé%20un%20abrazo%20y%20una%20colaboración%20para%20tus%20medicamentos." target="_blank" rel="noopener" class="underline font-semibold text-stone-700 hover:text-emerald-700">WhatsApp</a>.
             </p>
           </div>
 
@@ -721,19 +641,6 @@
 
     </div>
   </div>
-
-  <!-- FLOATING QUICK WHATSAPP BUTTON (Always accessible) -->
-  <a 
-    href="https://wa.me/{{ business.phone_raw }}?text=¡Hola%20Facu!%20Te%20escribo%20desde%20la%20página%20web" 
-    target="_blank" 
-    rel="noopener" 
-    class="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-30 w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center text-3xl shadow-xl hover:scale-105 transition-all group"
-    title="Chatear con Facu"
-    aria-label="Abrir chat de WhatsApp con Facundo"
-  >
-    <i class="ph-fill ph-whatsapp-logo"></i>
-    <span class="sr-only">Contactar por WhatsApp</span>
-  </a>
 
   <!-- PRODUCTS DATA EMBEDDED SAFELY FOR JS -->
   <script>
