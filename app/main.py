@@ -68,12 +68,68 @@ CATEGORY_LABELS = {
     "porciones": "🍰 Porciones & Merienda",
 }
 
+def load_settings():
+    data_path = BASE_DIR / "data" / "settings.json"
+    defaults = {
+        "phone_display": "11 6454-6785",
+        "phone_raw": "5491164546785",
+        "whatsapp_greeting": "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:",
+        "whatsapp_footer": "¿Cómo coordinamos el pago y horario? ¡Muchas gracias!",
+        "support_alias": "FACU.TORTAS.HURLINGHAM",
+        "support_holder": "Facundo Juárez Downes",
+        "support_entity": "Mercado Pago / Cuenta Digital",
+        "support_note": "💙 *Colaboración voluntaria:* Me gustaría sumar un aporte de corazón para tus medicamentos.",
+    }
+    if not data_path.exists():
+        return defaults
+    try:
+        with open(data_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            defaults.update(data)
+            return defaults
+    except Exception:
+        return defaults
+
+
+def save_settings(settings: dict):
+    data_path = BASE_DIR / "data" / "settings.json"
+    with open(data_path, "w", encoding="utf-8") as f:
+        json.dump(settings, f, ensure_ascii=False, indent=2)
+
+
+def get_business_info():
+    st = load_settings()
+    return {
+        "name": "Facu de las Tortas",
+        "full_name": "Facundo Juárez Downes",
+        "tagline": "Más de 20 años endulzando los hogares y comercios de Hurlingham",
+        "phone_display": st.get("phone_display", "11 6454-6785"),
+        "phone_raw": st.get("phone_raw", "5491164546785"),
+        "instagram": "juarezdownes",
+        "instagram_url": "https://www.instagram.com/juarezdownes/",
+        "tiktok_url": "https://www.tiktok.com/@juarezdownes",
+        "email": "fmjuarez82@gmail.com",
+        "location": "Hurlingham, Buenos Aires",
+        "coverage_areas": ["Hurlingham centro", "Villa Tesei", "William Morris", "Alrededores"],
+        "payment_methods": ["Mercado Pago", "Transferencia bancaria", "Efectivo al recibir"],
+        "experience_years": "Más de 20 años",
+        "support": {
+            "title": "Un mimo para la salud de Facu",
+            "alias": st.get("support_alias", "FACU.TORTAS.HURLINGHAM"),
+            "holder": st.get("support_holder", "Facundo Juárez Downes"),
+            "entity": st.get("support_entity", "Mercado Pago / Cuenta Digital"),
+        },
+        "settings": st,
+    }
+
+
 def load_products():
     data_path = BASE_DIR / "data" / "products.json"
     if not data_path.exists():
         return []
     with open(data_path, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 def save_products(products: list):
     data_path = BASE_DIR / "data" / "products.json"
@@ -95,7 +151,7 @@ def home(request: Request):
         request=request,
         name="index.html",
         context={
-            "business": BUSINESS_INFO,
+            "business": get_business_info(),
             "products": products,
             "categories": categories,
         },
@@ -140,8 +196,9 @@ def create_whatsapp_link(order: OrderRequest):
     if not order.items:
         raise HTTPException(status_code=400, detail="El pedido debe tener al menos un producto.")
 
+    st = load_settings()
     lines = [
-        "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:",
+        st.get("whatsapp_greeting", "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:"),
         "",
         "🍰 *DETALLE DEL PEDIDO:*",
     ]
@@ -167,11 +224,12 @@ def create_whatsapp_link(order: OrderRequest):
         lines.append(f"📝 *Aclaraciones:* {order.notes}")
 
     lines.append("")
-    lines.append("¿Cómo coordinamos el pago y horario? ¡Muchas gracias!")
+    lines.append(st.get("whatsapp_footer", "¿Cómo coordinamos el pago y horario? ¡Muchas gracias!"))
 
     raw_text = "\n".join(lines)
     encoded_text = urllib.parse.quote(raw_text)
-    wa_url = f"https://wa.me/{BUSINESS_INFO['phone_raw']}?text={encoded_text}"
+    phone = st.get("phone_raw", "5491164546785")
+    wa_url = f"https://wa.me/{phone}?text={encoded_text}"
 
     return {
         "url": wa_url,
@@ -233,19 +291,48 @@ def admin_dashboard(request: Request):
         return RedirectResponse("/admin/login", status_code=303)
 
     products = load_products()
+    settings = load_settings()
     saved = request.query_params.get("saved") == "1"
     deleted = request.query_params.get("deleted") == "1"
+    settings_saved = request.query_params.get("settings_saved") == "1"
 
     return templates.TemplateResponse(
         request=request,
         name="admin.html",
         context={
             "products": products,
+            "settings": settings,
             "saved": saved,
             "deleted": deleted,
+            "settings_saved": settings_saved,
             "categories": CATEGORY_LABELS,
         },
     )
+
+
+@app.post("/admin/settings/save")
+def admin_save_settings(
+    request: Request,
+    phone_display: str = Form(...),
+    phone_raw: str = Form(...),
+    whatsapp_greeting: str = Form(...),
+    whatsapp_footer: str = Form(...),
+    support_alias: str = Form(...),
+    support_holder: str = Form(...),
+):
+    if not is_admin_authenticated(request):
+        raise HTTPException(status_code=403, detail="No autorizado")
+
+    st = load_settings()
+    st["phone_display"] = phone_display.strip()
+    st["phone_raw"] = re.sub(r"[^0-9]+", "", phone_raw.strip())
+    st["whatsapp_greeting"] = whatsapp_greeting.strip()
+    st["whatsapp_footer"] = whatsapp_footer.strip()
+    st["support_alias"] = support_alias.strip()
+    st["support_holder"] = support_holder.strip()
+
+    save_settings(st)
+    return RedirectResponse("/admin?settings_saved=1", status_code=303)
 
 
 @app.post("/admin/products/save")

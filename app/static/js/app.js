@@ -285,8 +285,12 @@ function submitOrderToWhatsApp() {
   const deliveryType = document.getElementById('order-delivery-type')?.value || 'Entrega en Hurlingham';
   const notes = document.getElementById('order-notes')?.value.trim() || '';
 
+  const greeting = window.BUSINESS_CONFIG?.settings?.whatsapp_greeting || "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:";
+  const footer = window.BUSINESS_CONFIG?.settings?.whatsapp_footer || "¿Cómo coordinamos el pago y horario? ¡Muchas gracias!";
+  const supportNote = window.BUSINESS_CONFIG?.settings?.support_note || "💙 *Colaboración voluntaria:* Me gustaría sumar un aporte de corazón para tus medicamentos.";
+
   const lines = [
-    "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:",
+    greeting,
     "",
     "🍰 *DETALLE DEL PEDIDO:*"
   ];
@@ -313,11 +317,11 @@ function submitOrderToWhatsApp() {
   // Voluntary donation check
   const voluntarySupport = document.getElementById('order-voluntary-support')?.checked;
   if (voluntarySupport) {
-    lines.push("💙 *Colaboración voluntaria:* Me gustaría sumar un aporte de corazón para tus medicamentos.");
+    lines.push(supportNote);
   }
 
   lines.push("");
-  lines.push("¿Cómo coordinamos el pago y horario? ¡Muchas gracias!");
+  lines.push(footer);
 
   const fullText = lines.join("\n");
   const encodedText = encodeURIComponent(fullText);

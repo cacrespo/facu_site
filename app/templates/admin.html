@@ -82,6 +82,16 @@
     </div>
     {% endif %}
 
+    {% if settings_saved %}
+    <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-semibold flex items-center justify-between shadow-xs animate-pop">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-check-circle text-xl text-emerald-600"></i>
+        <span>¡Configuración de WhatsApp y Alias guardada exitosamente!</span>
+      </div>
+      <button onclick="this.parentElement.remove()" class="text-emerald-600 hover:text-emerald-900 text-lg">×</button>
+    </div>
+    {% endif %}
+
     <!-- Top Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-stone-200 shadow-2xs">
       <div>
@@ -93,14 +103,144 @@
         </p>
       </div>
 
-      <button 
-        type="button" 
-        onclick="openProductModal()" 
-        class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#bd3742] hover:bg-[#a32934] text-white font-bold text-sm shadow-sm hover:shadow transition-all active:scale-95"
-      >
-        <i class="ph-bold ph-plus text-base"></i>
-        <span>+ Agregar Nuevo Producto</span>
-      </button>
+      <div class="flex items-center gap-2.5">
+        <button 
+          type="button" 
+          onclick="toggleSettingsPanel()" 
+          class="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs sm:text-sm border border-stone-300 transition-all"
+        >
+          <i class="ph-fill ph-whatsapp-logo text-emerald-600 text-base"></i>
+          <span>Mensaje de WhatsApp & Datos</span>
+        </button>
+
+        <button 
+          type="button" 
+          onclick="openProductModal()" 
+          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#bd3742] hover:bg-[#a32934] text-white font-bold text-sm shadow-sm hover:shadow transition-all active:scale-95"
+        >
+          <i class="ph-bold ph-plus text-base"></i>
+          <span>+ Nuevo Producto</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Settings Panel: WhatsApp & Negocio -->
+    <div id="settings-panel" class="hidden bg-white p-6 rounded-2xl border border-stone-200 shadow-sm space-y-5 animate-pop">
+      <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+        <div class="flex items-center gap-2">
+          <i class="ph-fill ph-whatsapp-logo text-2xl text-emerald-600"></i>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-stone-900">Configuración de Mensaje de WhatsApp & Contacto</h3>
+            <p class="text-xs text-stone-500">Personalizá cómo le llega el pedido a Facu y los datos de transferencia</p>
+          </div>
+        </div>
+        <button type="button" onclick="toggleSettingsPanel()" class="text-stone-400 hover:text-stone-700 text-lg">×</button>
+      </div>
+
+      <form method="POST" action="/admin/settings/save" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- WhatsApp Visible Phone -->
+          <div>
+            <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Teléfono visible en la web
+            </label>
+            <input 
+              type="text" 
+              name="phone_display" 
+              value="{{ settings.phone_display }}" 
+              required 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#bd3742]"
+            >
+          </div>
+
+          <!-- WhatsApp Raw Number -->
+          <div>
+            <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Número de WhatsApp para recibir pedidos (con código de país)
+            </label>
+            <input 
+              type="text" 
+              name="phone_raw" 
+              value="{{ settings.phone_raw }}" 
+              required 
+              placeholder="5491164546785" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm text-stone-800 font-mono focus:outline-none focus:ring-2 focus:ring-[#bd3742]"
+            >
+          </div>
+
+          <!-- Greeting Line -->
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Saludo inicial del pedido por WhatsApp
+            </label>
+            <input 
+              type="text" 
+              name="whatsapp_greeting" 
+              value="{{ settings.whatsapp_greeting }}" 
+              required 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#bd3742]"
+            >
+          </div>
+
+          <!-- Footer Line -->
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Mensaje de cierre del pedido
+            </label>
+            <input 
+              type="text" 
+              name="whatsapp_footer" 
+              value="{{ settings.whatsapp_footer }}" 
+              required 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#bd3742]"
+            >
+          </div>
+
+          <!-- Alias -->
+          <div>
+            <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Alias de donación / colaboración
+            </label>
+            <input 
+              type="text" 
+              name="support_alias" 
+              value="{{ settings.support_alias }}" 
+              required 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm text-stone-800 font-mono focus:outline-none focus:ring-2 focus:ring-[#bd3742]"
+            >
+          </div>
+
+          <!-- Holder -->
+          <div>
+            <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-1">
+              Titular de la cuenta
+            </label>
+            <input 
+              type="text" 
+              name="support_holder" 
+              value="{{ settings.support_holder }}" 
+              required 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm text-stone-800 focus:outline-none focus:ring-2 focus:ring-[#bd3742]"
+            >
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-stone-100 flex items-center justify-end gap-3">
+          <button 
+            type="button" 
+            onclick="toggleSettingsPanel()" 
+            class="px-4 py-2 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-100 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm transition-all"
+          >
+            Guardar Configuración
+          </button>
+        </div>
+      </form>
     </div>
 
     <!-- Product Grid -->
@@ -383,6 +523,17 @@
   </div>
 
   <script>
+    // Toggle Settings Panel
+    function toggleSettingsPanel() {
+      const panel = document.getElementById('settings-panel');
+      if (panel) {
+        panel.classList.toggle('hidden');
+        if (!panel.classList.contains('hidden')) {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }
+
     // Modal Helpers
     function openProductModal() {
       document.getElementById('modal-title').textContent = 'Agregar Nuevo Producto';
