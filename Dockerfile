@@ -1,14 +1,21 @@
-FROM python:3.10-slim
+# Usar la imagen oficial de Astral uv con Python slim
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 WORKDIR /app
 
-# Prevent Python from writing .pyc and buffer stdout/stderr
-ENV PYTHONDONTWRITEBYTECODE=1
+# Compilar bytecode para arranques más rápidos
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
 ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Instalar dependencias usando el lockfile
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-install-project --no-dev
 
+# Agregar el entorno virtual de uv al PATH
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Copiar el código de la aplicación
 COPY . .
 
 EXPOSE 8000

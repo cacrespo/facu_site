@@ -12,33 +12,34 @@ Sitio web oficial, catálogo interactivo y generador de pedidos por WhatsApp par
   * Al agregar productos se activa una barra flotante inferior.
   * Modal deslizante estilo *bottom-sheet* para ajustar cantidades, indicar nombre, dirección o fecha deseada.
   * Botón directo que abre WhatsApp (`+54 9 11 6454-6785`) con el mensaje prolijo y total calculado listo para enviar.
-* **Stack en Python:** Desarrollado con **FastAPI** y templates **Jinja2**, ofreciendo velocidad ultrarrápida, SEO con OpenGraph para previsualizaciones atractivas en redes sociales y APIs REST listas para consumir.
+* **Stack en Python con `uv`:** Gestión ultra-rápida de entornos y bibliotecas con **`uv`**, servidor moderno con **FastAPI** y templates **Jinja2**.
 * **Fácil de mantener:** Los productos, precios y fotos se administran desde un archivo simple (`app/data/products.json`).
-* **Listo para desplegar:** Incluye configuración para Render, Railway, Fly.io o cualquier servidor con Docker.
+* **Listo para desplegar:** Incluye configuración para Render, Railway, Fly.io o Docker con la imagen oficial de `uv`.
 
 ---
 
-## 🚀 Cómo ejecutar en desarrollo
+## ⚡ Gestión con `uv` y desarrollo local
 
-1. **Crear y activar entorno virtual:**
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+El proyecto utiliza **`uv`** de Astral para la gestión del entorno y las dependencias.
 
-2. **Instalar dependencias:**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 1. Sincronizar el entorno virtual
+```bash
+uv sync
+```
+*(Crea automáticamente `.venv` y sincroniza todas las bibliotecas con `uv.lock` en milisegundos)*.
 
-3. **Iniciar el servidor:**
-   ```bash
-   python run.py
-   # o bien:
-   uvicorn app.main:app --reload --port 8000
-   ```
+### 2. Ejecutar el servidor local
+```bash
+uv run python run.py
+```
+*(O bien: `uv run uvicorn app.main:app --reload --port 8000`)*
 
-4. Abrir en el navegador: [http://localhost:8000](http://localhost:8000)
+Luego abrís en tu navegador: **[http://localhost:8000](http://localhost:8000)**
+
+### 3. Agregar nuevas bibliotecas (si fueran necesarias)
+```bash
+uv add nombre-de-libreria
+```
 
 ---
 
@@ -46,6 +47,9 @@ Sitio web oficial, catálogo interactivo y generador de pedidos por WhatsApp par
 
 ```text
 facu_site/
+├── pyproject.toml           # Configuración del proyecto y dependencias de uv
+├── uv.lock                  # Lockfile determinista y ultra-rápido de uv
+├── requirements.txt         # Export para plataformas PaaS tradicionales
 ├── app/
 │   ├── data/
 │   │   └── products.json    # Catálogo de tortas, precios, porciones y fotos
@@ -55,27 +59,27 @@ facu_site/
 │   ├── templates/
 │   │   └── index.html       # Interfaz completa y responsiva
 │   └── main.py              # Aplicación FastAPI, rutas y APIs
-├── Dockerfile               # Contenedor listo para producción
+├── Dockerfile               # Contenedor optimizado con ghcr.io/astral-sh/uv
 ├── Procfile                 # Despliegue en Render / Railway / Heroku
-├── requirements.txt         # Dependencias Python mínimas y livianas
 ├── run.py                   # Script de arranque rápido
 └── README.md
 ```
 
 ---
 
-## ☁️ Opciones de despliegue sugeridas
+## ☁️ Opciones de despliegue
 
-1. **Render / Railway (PaaS sin costo inicial o bajo costo):**
-   * Conectar el repositorio de GitHub.
-   * Render detecta automáticamente el `requirements.txt` o `Procfile`.
+1. **Render / Railway / Heroku:**
+   * Reconoce el `Procfile` y `requirements.txt` automáticamente.
    * Comando de inicio: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 
 2. **Fly.io / VPS con Docker:**
-   * Simplemente ejecutar `fly launch` o `docker build -t facu-site . && docker run -p 8000:8000 facu-site`.
-
-3. **PythonAnywhere:**
-   * Compatible con aplicaciones WSGI/ASGI estándar de Python.
+   * El `Dockerfile` utiliza la imagen oficial optimizada `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`.
+   * Ejecutar:
+     ```bash
+     docker build -t facu-site .
+     docker run -p 8000:8000 facu-site
+     ```
 
 ---
 
