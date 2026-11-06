@@ -16,14 +16,14 @@ function getProductById(id) {
 function filterCategory(categoryId) {
   // Update pill buttons visual state
   document.querySelectorAll('.cat-pill').forEach(btn => {
-    btn.classList.remove('bg-stone-900', 'text-white', 'shadow-sm');
+    btn.classList.remove('bg-dulce-600', 'text-white', 'shadow-sm');
     btn.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-200/70');
   });
 
   const activeBtn = document.getElementById(`btn-cat-${categoryId}`);
   if (activeBtn) {
     activeBtn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200/70');
-    activeBtn.classList.add('bg-stone-900', 'text-white', 'shadow-sm');
+    activeBtn.classList.add('bg-dulce-600', 'text-white', 'shadow-sm');
   }
 
   // Filter cards

@@ -1,4 +1,19 @@
-/* Custom Utility Styles for Facu de las Tortas */
+/* Custom Utility Styles for Juárez Downes Pastelería */
+
+/* Vintage Patisserie Stripes (matching official logo) */
+.patisserie-stripes {
+  background: repeating-linear-gradient(
+    90deg,
+    #ec7b73 0px,
+    #ec7b73 14px,
+    #fcf4e9 14px,
+    #fcf4e9 28px,
+    #a0c7cc 28px,
+    #a0c7cc 42px,
+    #fcf4e9 42px,
+    #fcf4e9 56px
+  );
+}
 
 /* Hide scrollbars for horizontal categories scrolling while keeping functionality */
 .no-scrollbar::-webkit-scrollbar {
