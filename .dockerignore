@@ -1,0 +1,13 @@
+.git
+.gitignore
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+.DS_Store
+.env
+*.env
+*.log
+app/static/img/uploads/*
+!app/static/img/uploads/.gitkeep

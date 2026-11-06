@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    ports:
+      - "${PORT:-8080}:8000"
+    environment:
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-facu2024}
+      - SECRET_KEY=${SECRET_KEY:-facu-super-secret-key-2024}
+    volumes:
+      - ./app/data:/app/app/data
+      - ./app/static/img/uploads:/app/app/static/img/uploads
+    restart: unless-stopped
