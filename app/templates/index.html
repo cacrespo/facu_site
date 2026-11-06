@@ -73,49 +73,53 @@
   <div class="h-2 w-full patisserie-stripes"></div>
 
   <!-- TOP ANNOUNCEMENT BAR -->
-  <div class="bg-dulce-800 text-stone-100 text-xs sm:text-sm py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2">
+  <div class="bg-dulce-800 text-stone-100 text-[11px] sm:text-sm py-1.5 sm:py-2 px-3 text-center font-medium tracking-wide flex items-center justify-center gap-1.5 sm:gap-2">
     <span>🛵 Entregas en Hurlingham y alrededores</span>
     <span class="hidden sm:inline">•</span>
     <span class="hidden sm:inline">🍰 Pedidos con 24/48 hs de anticipación</span>
   </div>
 
   <!-- NAVIGATION -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-2xs transition-all">
-    <div class="max-w-6xl mx-auto px-4 h-16 sm:h-20 flex items-center justify-between">
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-2xs">
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 h-16 sm:h-20 flex items-center justify-between gap-2">
       
-      <!-- Brand Identity (Monograma artesanal limpio en reemplazo del logo complejo) -->
-      <a href="#" class="flex items-center gap-3 group">
+      <!-- Brand Identity (Responsive layout, never collides with nav) -->
+      <a href="#" class="flex items-center gap-2 sm:gap-3 group min-w-0 shrink">
         <!-- Monogram Seal "JDP" with Heart -->
-        <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-[#fcf4e9] border-2 border-[#5f889a] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform text-[#bd3742] shrink-0">
-          <span class="font-serif font-black text-base sm:text-lg tracking-tight flex items-center select-none pl-0.5">
-            JDP<span class="text-[10px] text-[#bd3742] -mt-2 ml-0.5 animate-pulse">♥</span>
+        <div class="w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-[#fcf4e9] border-2 border-[#5f889a] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform text-[#bd3742] shrink-0">
+          <span class="font-serif font-black text-sm sm:text-lg tracking-tight flex items-center select-none pl-0.5">
+            JDP<span class="text-[9px] sm:text-[10px] text-[#bd3742] -mt-1 sm:-mt-2 ml-0.5 animate-pulse">♥</span>
           </span>
         </div>
-        <div>
-          <span class="font-serif font-black text-xl sm:text-2xl text-stone-900 tracking-tight block leading-tight group-hover:text-[#bd3742] transition-colors">
-            Juárez Downes <span class="text-[#bd3742] font-normal italic text-base sm:text-lg">Pastelería</span>
-          </span>
-          <span class="text-[11px] sm:text-xs text-stone-500 flex items-center gap-1 font-medium">
-            <i class="ph-fill ph-map-pin text-[#bd3742] text-xs"></i> "Facu de las tortas" • Hurlingham
-          </span>
+        <div class="min-w-0">
+          <div class="font-serif font-black text-base sm:text-2xl text-stone-900 tracking-tight leading-none group-hover:text-[#bd3742] transition-colors truncate">
+            Juárez Downes <span class="text-[#bd3742] font-normal italic text-xs sm:text-lg ml-0.5">Pastelería</span>
+          </div>
+          <div class="text-[10px] sm:text-xs text-stone-500 flex items-center gap-1 font-medium mt-0.5 truncate">
+            <i class="ph-fill ph-map-pin text-[#bd3742] text-[10px] sm:text-xs shrink-0"></i>
+            <span class="truncate">"Facu de las tortas" • Hurlingham</span>
+          </div>
         </div>
       </a>
 
-      <!-- Clean Nav & Socials -->
-      <nav class="flex items-center gap-3 sm:gap-6">
-        <a href="#menu" class="hidden sm:inline-block text-sm font-semibold text-stone-700 hover:text-dulce-600 transition-colors">
+      <!-- Clean Nav & Socials (Compact touch targets on mobile) -->
+      <nav class="flex items-center gap-1.5 sm:gap-5 shrink-0">
+        <a href="#menu" class="hidden md:inline-block text-sm font-semibold text-stone-700 hover:text-dulce-600 transition-colors">
           Menú
         </a>
-        <a href="#historia" class="hidden sm:inline-block text-sm font-semibold text-stone-700 hover:text-dulce-600 transition-colors">
+        <a href="#historia" class="hidden md:inline-block text-sm font-semibold text-stone-700 hover:text-dulce-600 transition-colors">
           Historia
         </a>
-        <a href="#apoyo" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-dulce-600 hover:text-dulce-700 transition-colors bg-dulce-100/70 px-3 py-1.5 rounded-full border border-dulce-200">
-          <i class="ph-fill ph-heart text-dulce-600"></i>
-          <span>Acompañar a Facu</span>
+        
+        <!-- Apoyo / Acompañar a Facu -->
+        <a href="#apoyo" class="inline-flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-bold text-dulce-600 hover:text-dulce-700 bg-dulce-100/80 hover:bg-dulce-200/80 px-2.5 sm:px-3.5 py-1.5 rounded-full border border-dulce-200 shadow-2xs transition-all shrink-0">
+          <i class="ph-fill ph-heart text-xs sm:text-sm text-dulce-600 animate-pulse"></i>
+          <span class="hidden sm:inline">Acompañar a Facu</span>
+          <span class="sm:hidden text-[11px]">Apoyar</span>
         </a>
 
         <!-- Instagram Link -->
-        <a href="{{ business.instagram_url }}" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-pink-600 flex items-center justify-center transition-colors text-xl" title="Instagram de Facu">
+        <a href="{{ business.instagram_url }}" target="_blank" rel="noopener" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-pink-600 flex items-center justify-center transition-colors text-base sm:text-xl shrink-0" title="Instagram de Facu">
           <i class="ph-bold ph-instagram-logo"></i>
         </a>
       </nav>
@@ -123,29 +127,29 @@
   </header>
 
   <!-- HERO SECTION (Mobile Optimized) -->
-  <section class="relative overflow-hidden pt-8 pb-12 sm:py-16 md:py-20 bg-gradient-to-b from-[#fcf4e9]/70 via-[#fdfaf6] to-[#fdfaf6]">
+  <section class="relative overflow-hidden pt-6 pb-12 sm:py-16 md:py-20 bg-gradient-to-b from-[#fcf4e9]/70 via-[#fdfaf6] to-[#fdfaf6]">
     <div class="max-w-6xl mx-auto px-4">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
         <!-- Left Column: Copy & CTAs -->
-        <div class="lg:col-span-7 text-center lg:text-left space-y-5">
+        <div class="lg:col-span-7 text-center lg:text-left space-y-4 sm:space-y-5">
           
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#eef4f6] text-[#446878] border border-[#a0c7cc]/80 text-xs sm:text-sm font-semibold shadow-2xs">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#eef4f6] text-[#446878] border border-[#a0c7cc]/80 text-[11px] sm:text-sm font-semibold shadow-2xs">
             <span class="flex h-2 w-2 rounded-full bg-dulce-600 animate-pulse"></span>
             Más de 20 años endulzando mi querido Hurlingham
           </div>
 
-          <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-[1.15] tracking-tight">
+          <h1 class="font-serif text-2xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-[1.2] sm:leading-[1.15] tracking-tight">
             ¡Hola! Soy Facu. Hago cada torta con <span class="text-dulce-600 italic">el corazón</span>.
           </h1>
 
-          <p class="text-base sm:text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+          <p class="text-sm sm:text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
             Te doy la bienvenida a mi pastelería artesanal. Desde hace más de 20 años preparo cada receta a mano, con abundante dulce de leche, materias primas de primera y el amor de siempre para que disfrutes en familia.
           </p>
 
           <!-- Single Clean CTA -->
           <div class="pt-2">
-            <a href="#menu" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-dulce-600 hover:bg-dulce-700 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
+            <a href="#menu" class="inline-flex items-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-dulce-600 hover:bg-dulce-700 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
               <span>Ver Menú y Precios</span>
               <i class="ph-bold ph-arrow-down"></i>
             </a>
@@ -171,14 +175,14 @@
                 >
                 <div class="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-stone-900/15 to-transparent"></div>
                 <div class="absolute bottom-3 left-4 right-4 text-white">
-                  <span class="text-[11px] font-bold tracking-wider uppercase text-amber-300 block">⭐ Mi especialidad más pedida</span>
-                  <h3 class="font-serif font-bold text-xl leading-tight">Rogel Clásico Tradicional</h3>
-                  <p class="text-xs text-stone-200 mt-0.5">Capas finas y crocantes con dulce de leche colonial y merengue flameado</p>
+                  <span class="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-amber-300 block">⭐ Mi especialidad más pedida</span>
+                  <h3 class="font-serif font-bold text-lg sm:text-xl leading-tight">Rogel Clásico Tradicional</h3>
+                  <p class="text-[11px] sm:text-xs text-stone-200 mt-0.5">Capas finas y crocantes con dulce de leche colonial y merengue flameado</p>
                 </div>
               </div>
 
-              <!-- Overlapping Official Seal Badge -->
-              <div class="absolute -top-5 -right-3 sm:-top-6 sm:-right-4 w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-3 border-white shadow-xl ring-2 ring-[#5f889a]/50 bg-white">
+              <!-- Overlapping Official Seal Badge (Responsive safe margin) -->
+              <div class="absolute -top-4 -right-2 sm:-top-6 sm:-right-4 w-18 h-18 sm:w-24 sm:h-24 rounded-full overflow-hidden border-3 border-white shadow-xl ring-2 ring-[#5f889a]/50 bg-white">
                 <img src="/static/img/logo.jpeg" alt="Sello Oficial Juárez Downes" class="w-full h-full object-cover">
               </div>
 
@@ -386,17 +390,17 @@
               </span>
             </div>
 
-            <!-- Alias Box with Tap to Copy -->
-            <div class="bg-white border border-stone-300 rounded-xl px-4 py-3 flex items-center justify-between gap-3 shadow-2xs">
-              <div>
+            <!-- Alias Box with Tap to Copy (Mobile friendly responsive stack) -->
+            <div class="bg-white border border-stone-300 rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+              <div class="min-w-0">
                 <span class="block text-[10px] uppercase font-bold text-stone-400">Alias de Mercado Pago</span>
-                <span id="support-alias-text" class="font-mono font-black text-stone-900 text-sm sm:text-base tracking-wide select-all">{{ business.support.alias }}</span>
+                <span id="support-alias-text" class="font-mono font-black text-stone-900 text-sm sm:text-base tracking-wide select-all break-all sm:break-normal">{{ business.support.alias }}</span>
               </div>
               <button 
                 type="button" 
                 onclick="copySupportAlias()" 
                 id="btn-copy-alias"
-                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-all active:scale-95 shadow-xs shrink-0"
+                class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold transition-all active:scale-95 shadow-xs shrink-0 w-full sm:w-auto"
                 title="Copiar alias al portapapeles"
               >
                 <i class="ph-bold ph-copy text-sm"></i>
@@ -691,11 +695,11 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
           <div>
             <label class="block font-semibold text-stone-700 mb-1">Tu nombre (opcional)</label>
-            <input type="text" id="order-customer-name" placeholder="Ej: Marcela" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-stone-800 focus:outline-none focus:ring-2 focus:ring-dulce-500">
+            <input type="text" id="order-customer-name" placeholder="Ej: Marcela" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-stone-800 text-base sm:text-xs focus:outline-none focus:ring-2 focus:ring-dulce-500">
           </div>
           <div>
             <label class="block font-semibold text-stone-700 mb-1">Modalidad</label>
-            <select id="order-delivery-type" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-stone-800 focus:outline-none focus:ring-2 focus:ring-dulce-500">
+            <select id="order-delivery-type" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-stone-800 text-base sm:text-xs focus:outline-none focus:ring-2 focus:ring-dulce-500">
               <option value="Entrega en Hurlingham">Envío a domicilio (Hurlingham)</option>
               <option value="Punto de encuentro a coordinar">Punto de encuentro a coordinar</option>
               <option value="Retiro a convenir">Retiro a convenir</option>
@@ -704,7 +708,7 @@
         </div>
         <div>
           <label class="block font-semibold text-stone-700 text-xs mb-1">Fecha deseada o aclaraciones (opcional)</label>
-          <input type="text" id="order-notes" placeholder="Ej: Para el sábado al mediodía / Cumpleaños" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-xs text-stone-800 focus:outline-none focus:ring-2 focus:ring-dulce-500">
+          <input type="text" id="order-notes" placeholder="Ej: Para el sábado al mediodía / Cumpleaños" class="w-full px-3 py-2 rounded-lg border border-stone-300 text-base sm:text-xs text-stone-800 focus:outline-none focus:ring-2 focus:ring-dulce-500">
         </div>
 
         <!-- Optional voluntary donation check -->
