@@ -47,7 +47,7 @@ def load_products():
         return json.load(f)
 
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def home(request: Request):
     products = load_products()
     categories = [
