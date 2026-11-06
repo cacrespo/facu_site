@@ -310,6 +310,12 @@ function submitOrderToWhatsApp() {
     lines.push(`📝 *Aclaraciones / Fecha:* ${notes}`);
   }
 
+  // Voluntary donation check
+  const voluntarySupport = document.getElementById('order-voluntary-support')?.checked;
+  if (voluntarySupport) {
+    lines.push("💙 *Colaboración voluntaria:* Me gustaría sumar un aporte de corazón para tus medicamentos.");
+  }
+
   lines.push("");
   lines.push("¿Cómo coordinamos el pago y horario? ¡Muchas gracias!");
 
@@ -358,3 +364,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// Copy Support Alias to clipboard
+function copySupportAlias() {
+  const alias = window.BUSINESS_CONFIG?.support?.alias || 'FACU.TORTAS.HURLINGHAM';
+  navigator.clipboard.writeText(alias).then(() => {
+    const btn = document.getElementById('btn-copy-alias');
+    const label = document.getElementById('btn-copy-alias-label');
+    if (btn && label) {
+      const originalText = label.textContent;
+      label.textContent = '¡Copiado! ✓';
+      btn.classList.remove('bg-stone-900', 'hover:bg-stone-800');
+      btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+      setTimeout(() => {
+        label.textContent = originalText;
+        btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+        btn.classList.add('bg-stone-900', 'hover:bg-stone-800');
+      }, 2000);
+    }
+  }).catch(() => {
+    const textEl = document.getElementById('support-alias-text');
+    if (textEl) {
+      window.prompt('Copiá el alias de Facu:', alias);
+    }
+  });
+}

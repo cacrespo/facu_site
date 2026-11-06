@@ -36,6 +36,13 @@ BUSINESS_INFO = {
     "coverage_areas": ["Hurlingham centro", "Villa Tesei", "William Morris", "Alrededores"],
     "payment_methods": ["Mercado Pago", "Transferencia bancaria", "Efectivo al recibir"],
     "experience_years": "Más de 20 años",
+    "support": {
+        "title": "Un mimo para la salud de Facu",
+        "alias": "FACU.TORTAS.HURLINGHAM",  # Alias editable por Carlos o Facu
+        "cbu_cvu": "0000003100012345678901",
+        "holder": "Facundo Juárez Downes",
+        "entity": "Mercado Pago / Cuenta Bancaria",
+    },
 }
 
 
