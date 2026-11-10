@@ -137,9 +137,27 @@ def save_products(products: list):
         json.dump(products, f, ensure_ascii=False, indent=2)
 
 
+def load_reviews():
+    data_path = BASE_DIR / "data" / "reviews.json"
+    if not data_path.exists():
+        return []
+    try:
+        with open(data_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+
+def save_reviews(reviews: list):
+    data_path = BASE_DIR / "data" / "reviews.json"
+    with open(data_path, "w", encoding="utf-8") as f:
+        json.dump(reviews, f, ensure_ascii=False, indent=2)
+
+
 @app.api_route("/", methods=["GET", "HEAD"])
 def home(request: Request):
     products = load_products()
+    reviews = [r for r in load_reviews() if r.get("is_approved", True)]
     categories = [
         {"id": "todos", "label": "Todo el menú"},
         {"id": "destacados", "label": "⭐ Especialidades"},
@@ -154,6 +172,7 @@ def home(request: Request):
             "business": get_business_info(),
             "products": products,
             "categories": categories,
+            "reviews": reviews,
         },
     )
 
@@ -238,6 +257,44 @@ def create_whatsapp_link(order: OrderRequest):
     }
 
 
+class ReviewCreate(BaseModel):
+    name: str
+    neighborhood: Optional[str] = "Hurlingham"
+    rating: int = 5
+    comment: str
+
+
+@app.get("/api/reviews")
+def get_reviews():
+    reviews = load_reviews()
+    return [r for r in reviews if r.get("is_approved", True)]
+
+
+@app.post("/api/reviews")
+def submit_review(review: ReviewCreate):
+    name = review.name.strip()
+    comment = review.comment.strip()
+    if not name or not comment:
+        raise HTTPException(status_code=400, detail="Nombre y comentario son requeridos.")
+
+    rating = max(1, min(5, review.rating))
+    neighborhood = review.neighborhood.strip() if review.neighborhood else "Hurlingham"
+
+    reviews = load_reviews()
+    new_rev = {
+        "id": f"rev-{int(time.time())}",
+        "name": name,
+        "neighborhood": neighborhood,
+        "rating": rating,
+        "comment": comment,
+        "date": time.strftime("%d/%m/%Y"),
+        "is_approved": True,
+    }
+    reviews.insert(0, new_rev)
+    save_reviews(reviews)
+    return {"success": True, "review": new_rev}
+
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "app": "Facu de las Tortas", "version": "1.0.0"}
@@ -292,9 +349,12 @@ def admin_dashboard(request: Request):
 
     products = load_products()
     settings = load_settings()
+    reviews = load_reviews()
     saved = request.query_params.get("saved") == "1"
     deleted = request.query_params.get("deleted") == "1"
     settings_saved = request.query_params.get("settings_saved") == "1"
+    review_toggled = request.query_params.get("review_toggled") == "1"
+    review_deleted = request.query_params.get("review_deleted") == "1"
 
     return templates.TemplateResponse(
         request=request,
@@ -302,12 +362,38 @@ def admin_dashboard(request: Request):
         context={
             "products": products,
             "settings": settings,
+            "reviews": reviews,
             "saved": saved,
             "deleted": deleted,
             "settings_saved": settings_saved,
+            "review_toggled": review_toggled,
+            "review_deleted": review_deleted,
             "categories": CATEGORY_LABELS,
         },
     )
+
+
+@app.post("/admin/reviews/toggle/{review_id}")
+def admin_toggle_review(request: Request, review_id: str):
+    if not is_admin_authenticated(request):
+        raise HTTPException(status_code=403, detail="No autorizado")
+    reviews = load_reviews()
+    for r in reviews:
+        if r.get("id") == review_id:
+            r["is_approved"] = not r.get("is_approved", True)
+            break
+    save_reviews(reviews)
+    return RedirectResponse("/admin?review_toggled=1#reviews-section", status_code=303)
+
+
+@app.post("/admin/reviews/delete/{review_id}")
+def admin_delete_review(request: Request, review_id: str):
+    if not is_admin_authenticated(request):
+        raise HTTPException(status_code=403, detail="No autorizado")
+    reviews = load_reviews()
+    reviews = [r for r in reviews if r.get("id") != review_id]
+    save_reviews(reviews)
+    return RedirectResponse("/admin?review_deleted=1#reviews-section", status_code=303)
 
 
 @app.post("/admin/settings/save")
