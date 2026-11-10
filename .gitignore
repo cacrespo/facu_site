@@ -11,3 +11,6 @@ __pycache__/
 # Uploads persistidos en servidor
 app/static/img/uploads/*
 !app/static/img/uploads/.gitkeep
+
+# Git Worktrees
+.worktrees/
