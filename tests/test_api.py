@@ -59,7 +59,6 @@ def test_reviews_api():
 
 
 def test_submit_review():
-
     initial_reviews = load_reviews()
     try:
         payload = {
@@ -73,6 +72,55 @@ def test_submit_review():
         data = resp.json()
         assert data["success"] is True
         assert data["review"]["name"] == "Cliente de Prueba"
+        # Moderación previa: debe guardarse como is_approved=False
+        assert data["review"]["is_approved"] is False
+    finally:
+        save_reviews(initial_reviews)
+
+
+def test_submit_review_honeypot_silently_drops():
+    initial_reviews = load_reviews()
+    try:
+        payload = {
+            "name": "Spam Bot",
+            "neighborhood": "Online",
+            "rating": 5,
+            "comment": "Mensaje generado por bot",
+            "website_url": "https://spambot.xyz",
+        }
+        resp = client.post("/api/reviews", json=payload)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["success"] is True
+        # El honeypot no debe haber insertado la reseña en la base
+        current_reviews = load_reviews()
+        assert not any(r.get("name") == "Spam Bot" for r in current_reviews)
+    finally:
+        save_reviews(initial_reviews)
+
+
+def test_submit_review_rejects_external_links():
+    initial_reviews = load_reviews()
+    try:
+        payload = {
+            "name": "Spammer",
+            "neighborhood": "Hurlingham",
+            "rating": 5,
+            "comment": "Comprá cripto en http://casino-online.com ganá dinero",
+        }
+        resp = client.post("/api/reviews", json=payload)
+        assert resp.status_code == 400
+        assert "no se permiten enlaces" in resp.json()["detail"]
+
+        # También debe bloquear si el enlace está en el nombre
+        payload_name_link = {
+            "name": "www.megasite.ru",
+            "neighborhood": "Hurlingham",
+            "rating": 5,
+            "comment": "Excelente torta",
+        }
+        resp_name = client.post("/api/reviews", json=payload_name_link)
+        assert resp_name.status_code == 400
     finally:
         save_reviews(initial_reviews)
 

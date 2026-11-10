@@ -449,68 +449,34 @@ async function submitReviewForm(event) {
   const neighborhood = document.getElementById('rev-neighborhood')?.value.trim() || 'Hurlingham';
   const comment = document.getElementById('rev-comment')?.value.trim();
   const rating = parseInt(document.getElementById('rev-rating')?.value || '5', 10);
+  const honeypot = document.getElementById('rev-honeypot')?.value || '';
   const submitBtn = document.getElementById('btn-submit-review');
 
   if (!name || !comment) return;
 
   if (submitBtn) {
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Publicando...';
+    submitBtn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i> Enviando...';
   }
 
   try {
     const res = await fetch('/api/reviews', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, neighborhood, rating, comment }),
+      body: JSON.stringify({ name, neighborhood, rating, comment, website_url: honeypot }),
     });
 
-    if (!res.ok) throw new Error('Error al enviar reseña');
-    const data = await res.json();
-
-    // Insert new review card on the grid dynamically
-    const grid = document.getElementById('reviews-grid');
-    if (grid && data.review) {
-      const card = document.createElement('div');
-      card.className = 'bg-white rounded-2xl p-5 border border-amber-300 shadow-sm flex flex-col justify-between space-y-4 animate-pop';
-      let starsHtml = '';
-      for (let i = 0; i < (data.review.rating || 5); i++) {
-        starsHtml += '<i class="ph-fill ph-star"></i>';
-      }
-      card.innerHTML = `
-        <div class="space-y-2.5">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-0.5 text-amber-400 text-sm">
-              ${starsHtml}
-            </div>
-            <span class="text-[11px] text-stone-400 font-medium">${data.review.date}</span>
-          </div>
-          <p class="text-xs sm:text-sm text-stone-700 leading-relaxed italic">
-            "${data.review.comment}"
-          </p>
-        </div>
-        <div class="pt-3 border-t border-stone-100 flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center shrink-0">
-            ${data.review.name.charAt(0).toUpperCase()}
-          </div>
-          <div class="min-w-0">
-            <span class="font-bold text-xs text-stone-900 block truncate">${data.review.name}</span>
-            <span class="text-[10px] text-stone-500 block truncate flex items-center gap-1">
-              <i class="ph-fill ph-map-pin text-stone-400 text-[10px]"></i>
-              ${data.review.neighborhood}
-            </span>
-          </div>
-        </div>
-      `;
-      grid.prepend(card);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.detail || 'Hubo un error al enviar el mensaje.');
     }
 
     closeReviewModal();
-    alert('¡Muchas gracias por tu mensaje de cariño! Ya quedó publicado.');
+    alert(data.message || '¡Muchas gracias por tu mensaje de cariño para Facu! Quedó recibido y se publicará tras una breve moderación.');
     document.getElementById('review-form')?.reset();
     setReviewRating(5);
   } catch (err) {
-    alert('Hubo un error al publicar el mensaje. Por favor intentalo nuevamente o envialo por WhatsApp.');
+    alert(err.message || 'Hubo un error al enviar el mensaje. Por favor intentalo nuevamente o envialo por WhatsApp.');
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
