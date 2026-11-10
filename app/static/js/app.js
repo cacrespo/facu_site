@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Copy Support Alias to clipboard
 function copySupportAlias() {
-  const alias = window.BUSINESS_CONFIG?.support?.alias || 'FACU.TORTAS.HURLINGHAM';
+  const alias = window.BUSINESS_CONFIG?.support?.alias || 'juarezdownes.tortas';
   navigator.clipboard.writeText(alias).then(() => {
     const btn = document.getElementById('btn-copy-alias');
     const label = document.getElementById('btn-copy-alias-label');

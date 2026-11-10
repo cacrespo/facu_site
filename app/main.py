@@ -54,7 +54,7 @@ BUSINESS_INFO = {
     "experience_years": "Más de 20 años",
     "support": {
         "title": "Un mimo para la salud de Facu",
-        "alias": "FACU.TORTAS.HURLINGHAM",  # Alias editable por Carlos o Facu
+        "alias": "juarezdownes.tortas",  # Alias oficial de Mercado Pago
         "cbu_cvu": "0000003100012345678901",
         "holder": "Facundo Juárez Downes",
         "entity": "Mercado Pago / Cuenta Bancaria",
@@ -75,7 +75,7 @@ def load_settings():
         "phone_raw": "5491164546785",
         "whatsapp_greeting": "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:",
         "whatsapp_footer": "¿Cómo coordinamos el pago y horario? ¡Muchas gracias!",
-        "support_alias": "FACU.TORTAS.HURLINGHAM",
+        "support_alias": "juarezdownes.tortas",
         "support_holder": "Facundo Juárez Downes",
         "support_entity": "Mercado Pago / Cuenta Digital",
         "support_note": "💙 *Colaboración voluntaria:* Me gustaría sumar un aporte de corazón para tus medicamentos.",
@@ -115,7 +115,7 @@ def get_business_info():
         "experience_years": "Más de 20 años",
         "support": {
             "title": "Un mimo para la salud de Facu",
-            "alias": st.get("support_alias", "FACU.TORTAS.HURLINGHAM"),
+            "alias": st.get("support_alias", "juarezdownes.tortas"),
             "holder": st.get("support_holder", "Facundo Juárez Downes"),
             "entity": st.get("support_entity", "Mercado Pago / Cuenta Digital"),
         },
