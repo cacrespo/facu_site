@@ -92,6 +92,26 @@
     </div>
     {% endif %}
 
+    {% if review_toggled %}
+    <div class="p-4 rounded-2xl bg-sky-50 border border-sky-200 text-sky-800 text-sm font-semibold flex items-center justify-between shadow-xs animate-pop">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-check-circle text-xl text-sky-600"></i>
+        <span>El estado de visibilidad del comentario fue actualizado.</span>
+      </div>
+      <button onclick="this.parentElement.remove()" class="text-sky-600 hover:text-sky-900 text-lg">×</button>
+    </div>
+    {% endif %}
+
+    {% if review_deleted %}
+    <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-sm font-semibold flex items-center justify-between shadow-xs animate-pop">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-trash text-xl text-amber-600"></i>
+        <span>El comentario fue eliminado del registro.</span>
+      </div>
+      <button onclick="this.parentElement.remove()" class="text-amber-600 hover:text-amber-900 text-lg">×</button>
+    </div>
+    {% endif %}
+
     <!-- Top Action Bar -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-stone-200 shadow-2xs">
       <div>
@@ -315,6 +335,60 @@
 
       </div>
       {% endfor %}
+    </div>
+
+    <!-- SECCIÓN DE COMENTARIOS Y RESEÑAS DE CLIENTES -->
+    <div id="reviews-section" class="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-xs space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-stone-100 pb-4">
+        <div>
+          <h2 class="font-serif font-bold text-xl text-stone-900 flex items-center gap-2">
+            <i class="ph-fill ph-chat-centered-heart text-[#bd3742]"></i>
+            Mensajes y Reseñas de Clientes ({{ reviews|length }})
+          </h2>
+          <p class="text-xs text-stone-500 mt-0.5">
+            Administrá los mensajes de cariño dejados por los vecinos en la página web. Podés ocultarlos o eliminarlos si es necesario.
+          </p>
+        </div>
+      </div>
+
+      {% if reviews %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for rev in reviews %}
+        <div class="p-4 rounded-2xl border {% if rev.is_approved %}border-stone-200 bg-[#fdfaf6]{% else %}border-amber-200 bg-amber-50/50 opacity-75{% endif %} flex flex-col justify-between space-y-3">
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm text-stone-900">{{ rev.name }}</span>
+              <span class="text-xs text-amber-500">
+                {% for _ in range(rev.rating|default(5)) %}★{% endfor %}
+              </span>
+            </div>
+            <span class="text-[11px] text-stone-400 block">{{ rev.neighborhood }} • {{ rev.date }}</span>
+            <p class="text-xs text-stone-700 italic">"{{ rev.comment }}"</p>
+          </div>
+
+          <div class="pt-2 border-t border-stone-100 flex items-center justify-between">
+            <span class="text-[11px] font-semibold {% if rev.is_approved %}text-emerald-700{% else %}text-amber-700{% endif %}">
+              {% if rev.is_approved %}✓ Visible en la web{% else %}Oculto{% endif %}
+            </span>
+            <div class="flex items-center gap-2">
+              <form method="POST" action="/admin/reviews/toggle/{{ rev.id }}">
+                <button type="submit" class="px-2.5 py-1 rounded-lg text-xs font-semibold {% if rev.is_approved %}bg-stone-100 hover:bg-stone-200 text-stone-700{% else %}bg-emerald-100 hover:bg-emerald-200 text-emerald-800{% endif %} transition-colors">
+                  {% if rev.is_approved %}Ocultar{% else %}Mostrar{% endif %}
+                </button>
+              </form>
+              <form method="POST" action="/admin/reviews/delete/{{ rev.id }}" onsubmit="return confirm('¿Seguro que deseás eliminar este comentario?');">
+                <button type="submit" class="p-1 rounded-lg text-stone-400 hover:text-red-600 transition-colors" title="Eliminar comentario">
+                  <i class="ph-bold ph-trash"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-xs text-stone-400 py-4 text-center">Todavía no hay mensajes registrados.</p>
+      {% endif %}
     </div>
 
   </main>

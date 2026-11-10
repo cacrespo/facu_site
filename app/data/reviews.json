@@ -1,0 +1,29 @@
+[
+  {
+    "id": "rev-1",
+    "name": "Mariana López",
+    "neighborhood": "Hurlingham Centro",
+    "rating": 5,
+    "comment": "¡El mejor Rogel de toda la Zona Oeste sin dudas! Las capas son súper crocantes, abundante dulce de leche y el merengue flameado es una obra de arte. Nunca falta en los cumpleaños familiares.",
+    "date": "15/10/2024",
+    "is_approved": true
+  },
+  {
+    "id": "rev-2",
+    "name": "Lucas Gómez",
+    "neighborhood": "Villa Tesei",
+    "rating": 5,
+    "comment": "Facu pasa hace años por los comercios con su canasta y su energía positiva. Además de ser un ejemplo de esfuerzo y corazón, la tarta de coco con dulce de leche es insuperable.",
+    "date": "28/10/2024",
+    "is_approved": true
+  },
+  {
+    "id": "rev-3",
+    "name": "Familia Benítez",
+    "neighborhood": "William Morris",
+    "rating": 5,
+    "comment": "Encargamos la torta de ricota y una tarta de manzana para el domingo. Se nota la diferencia de lo casero, sin conservantes y hecho con todo el amor. ¡Un lujo tenerte en el barrio!",
+    "date": "02/11/2024",
+    "is_approved": true
+  }
+]
