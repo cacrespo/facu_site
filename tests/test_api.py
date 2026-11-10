@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from app.main import app, get_admin_token
+from app.main import app, get_admin_token, load_products, load_reviews, save_products, save_reviews
 
 client = TestClient(app)
 
@@ -59,7 +59,6 @@ def test_reviews_api():
 
 
 def test_submit_review():
-    from app.main import load_reviews, save_reviews
 
     initial_reviews = load_reviews()
     try:
@@ -118,3 +117,38 @@ def test_admin_auth_flow():
     resp_auth = client.get("/admin")
     assert resp_auth.status_code == 200
     assert "Panel de Catálogo" in resp_auth.text
+
+
+def test_featured_product_exclusivity():
+    initial_products = load_products()
+    client.cookies.set("admin_session", get_admin_token())
+    try:
+        # Mark tarta-ricota as featured
+        resp = client.post(
+            "/admin/products/save",
+            data={
+                "id": "tarta-ricota",
+                "name": "Tarta de Ricota Tradicional",
+                "category": "tartas",
+                "price": "14000",
+                "portions": "8 porciones",
+                "badge": "",
+                "description": "Relleno cremoso y suave aromatizado con limón",
+                "is_featured": "true",
+            },
+            follow_redirects=True,
+        )
+        assert resp.status_code == 200
+
+        # Verify only tarta-ricota is featured
+        products = load_products()
+        featured = [p for p in products if p.get("is_featured")]
+        assert len(featured) == 1
+        assert featured[0]["id"] == "tarta-ricota"
+
+        # Verify home page renders this product in the hero section
+        resp_home = client.get("/")
+        assert resp_home.status_code == 200
+        assert "Tarta de Ricota Tradicional" in resp_home.text
+    finally:
+        save_products(initial_products)

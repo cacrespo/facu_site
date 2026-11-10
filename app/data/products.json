@@ -21,7 +21,7 @@
     "price": 14000,
     "portions": "Rinde 8 a 10 porciones (24 cm)",
     "image": "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=800&q=80",
-    "is_featured": true
+    "is_featured": false
   },
   {
     "id": "tarta-ricota",
@@ -33,7 +33,7 @@
     "price": 13500,
     "portions": "Rinde 8 a 10 porciones",
     "image": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80",
-    "is_featured": true
+    "is_featured": false
   },
   {
     "id": "brownie-bomba",
@@ -45,7 +45,7 @@
     "price": 17500,
     "portions": "Rinde 10 a 12 porciones",
     "image": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80",
-    "is_featured": true
+    "is_featured": false
   },
   {
     "id": "lemon-pie",
@@ -93,7 +93,7 @@
     "price": 7500,
     "portions": "4 porciones generosas",
     "image": "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&w=800&q=80",
-    "is_featured": true
+    "is_featured": false
   },
   {
     "id": "alfajores-maicena",
