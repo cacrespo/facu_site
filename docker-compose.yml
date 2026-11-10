@@ -1,5 +1,6 @@
 services:
   web:
+    image: index.docker.io/lvccrespo/facu-website:latest
     build: .
     ports:
       - "${PORT:-8080}:8000"
