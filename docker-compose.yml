@@ -1,6 +1,6 @@
 services:
   web:
-    image: index.docker.io/lvccrespo/facu-website:latest
+    image: ghcr.io/cacrespo/facu_site:latest
     build: .
     ports:
       - "${PORT:-8080}:8000"
