@@ -20,6 +20,9 @@ def test_products_json_schema():
         assert p["price"] > 0
         assert p["name"].strip()
 
+    featured_count = sum(1 for p in products if p.get("is_featured"))
+    assert featured_count <= 1, f"Expected at most 1 featured product, got {featured_count}"
+
 
 def test_settings_json_schema():
     settings_path = BASE_DIR / "settings.json"

@@ -165,19 +165,26 @@
             <div class="absolute -inset-2 bg-gradient-to-tr from-[#ec7b73]/25 via-transparent to-[#a0c7cc]/30 rounded-3xl blur-xl"></div>
             
             <!-- Card -->
-            <div class="relative bg-white rounded-3xl p-3 sm:p-4 shadow-xl border border-stone-200/70">
+            <div class="relative bg-white rounded-3xl p-3 sm:p-4 shadow-xl border border-stone-200/70 group">
               <div class="relative overflow-hidden rounded-2xl aspect-[4/3] bg-stone-100">
                 <img 
-                  src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80" 
-                  alt="Rogel Clásico artesanal de Facu" 
+                  src="{{ featured_product.image if featured_product else 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80' }}" 
+                  alt="{{ featured_product.name if featured_product else 'Especialidad artesanal de Facu' }}" 
                   class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                   loading="eager"
+                  onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80'"
                 >
-                <div class="absolute inset-0 bg-gradient-to-t from-stone-900/70 via-stone-900/15 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/25 to-transparent"></div>
                 <div class="absolute bottom-3 left-4 right-4 text-white">
-                  <span class="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-amber-300 block">⭐ Mi especialidad más pedida</span>
-                  <h3 class="font-serif font-bold text-lg sm:text-xl leading-tight">Rogel Clásico Tradicional</h3>
-                  <p class="text-[11px] sm:text-xs text-stone-200 mt-0.5">Capas finas y crocantes con dulce de leche colonial y merengue flameado</p>
+                  <span class="text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-amber-300 block">
+                    {{ featured_product.badge if (featured_product and featured_product.badge) else '⭐ Producto destacado' }}
+                  </span>
+                  <h3 class="font-serif font-bold text-lg sm:text-xl leading-tight">
+                    {{ featured_product.name if featured_product else 'Rogel Clásico Tradicional' }}
+                  </h3>
+                  <p class="text-[11px] sm:text-xs text-stone-200 mt-0.5 line-clamp-2">
+                    {{ featured_product.description if featured_product else 'Capas finas y crocantes con dulce de leche colonial y merengue flameado' }}
+                  </p>
                 </div>
               </div>
 
@@ -187,8 +194,16 @@
               </div>
 
               <div class="pt-3 px-2 flex items-center justify-between text-xs text-stone-500">
-                <span class="font-semibold text-stone-800">Repostería Casera</span>
+                <span class="font-semibold text-stone-800">
+                  {{ featured_product.portions if (featured_product and featured_product.portions) else 'Repostería Casera' }}
+                </span>
+                {% if featured_product %}
+                <span class="font-extrabold text-[#bd3742] text-sm sm:text-base">
+                  ${{ "{:,.0f}".format(featured_product.price).replace(",", ".") }}
+                </span>
+                {% else %}
                 <span class="font-medium">Hurlingham, Bs. As.</span>
+                {% endif %}
               </div>
             </div>
 

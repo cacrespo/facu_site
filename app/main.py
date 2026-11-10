@@ -169,12 +169,17 @@ def home(request: Request):
         {"id": "tortas", "label": "🎂 Tortas Enteras"},
         {"id": "porciones", "label": "🍰 Porciones & Dulces"},
     ]
+    featured_product = next((p for p in products if p.get("is_featured")), None)
+    if not featured_product and products:
+        featured_product = products[0]
+
     return templates.TemplateResponse(
         request=request,
         name="index.html",
         context={
             "business": get_business_info(),
             "products": products,
+            "featured_product": featured_product,
             "categories": categories,
             "reviews": reviews,
         },
@@ -483,6 +488,11 @@ async def admin_save_product(
 
     category_label = CATEGORY_LABELS.get(category, "Especialidades")
     is_feat_bool = is_featured in ("true", "1", "on")
+
+    # Si se marca este producto como destacado en portada, desmarcar cualquier otro (exclusividad)
+    if is_feat_bool:
+        for p in products:
+            p["is_featured"] = False
 
     if existing:
         existing["name"] = name.strip()
