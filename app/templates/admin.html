@@ -359,7 +359,7 @@
       {% if reviews %}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {% for rev in reviews %}
-        <div class="p-4 rounded-2xl border {% if rev.is_approved %}border-stone-200 bg-[#fdfaf6]{% else %}border-amber-200 bg-amber-50/50 opacity-75{% endif %} flex flex-col justify-between space-y-3">
+        <div class="p-4 rounded-2xl border {% if rev.is_approved %}border-stone-200 bg-[#fdfaf6]{% else %}border-amber-300 bg-amber-50/70 shadow-xs{% endif %} flex flex-col justify-between space-y-3">
           <div class="space-y-1.5">
             <div class="flex items-center justify-between">
               <span class="font-bold text-sm text-stone-900">{{ rev.name }}</span>
@@ -372,13 +372,21 @@
           </div>
 
           <div class="pt-2 border-t border-stone-100 flex items-center justify-between">
-            <span class="text-[11px] font-semibold {% if rev.is_approved %}text-emerald-700{% else %}text-amber-700{% endif %}">
-              {% if rev.is_approved %}✓ Visible en la web{% else %}Oculto{% endif %}
+            <span class="text-[11px] font-bold">
+              {% if rev.is_approved %}
+                <span class="text-emerald-700 inline-flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <i class="ph-bold ph-check-circle"></i> Visible en la web
+                </span>
+              {% else %}
+                <span class="text-amber-800 inline-flex items-center gap-1 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-300 animate-pulse">
+                  <i class="ph-bold ph-clock"></i> Pendiente de moderación
+                </span>
+              {% endif %}
             </span>
             <div class="flex items-center gap-2">
               <form method="POST" action="/admin/reviews/toggle/{{ rev.id }}">
-                <button type="submit" class="px-2.5 py-1 rounded-lg text-xs font-semibold {% if rev.is_approved %}bg-stone-100 hover:bg-stone-200 text-stone-700{% else %}bg-emerald-100 hover:bg-emerald-200 text-emerald-800{% endif %} transition-colors">
-                  {% if rev.is_approved %}Ocultar{% else %}Mostrar{% endif %}
+                <button type="submit" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors {% if rev.is_approved %}bg-stone-100 hover:bg-stone-200 text-stone-700{% else %}bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs flex items-center gap-1{% endif %}">
+                  {% if rev.is_approved %}Ocultar{% else %}<i class="ph-bold ph-check"></i> Aprobar{% endif %}
                 </button>
               </form>
               <form method="POST" action="/admin/reviews/delete/{{ rev.id }}" onsubmit="return confirm('¿Seguro que deseás eliminar este comentario?');">

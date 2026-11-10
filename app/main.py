@@ -269,11 +269,18 @@ def create_whatsapp_link(order: OrderRequest):
     }
 
 
+URL_REGEX = re.compile(
+    r"(https?://|www\.|ftp://|[a-zA-Z0-9.-]+\.(com|org|net|edu|gov|ru|xyz|io|info|biz|site|online|top|club|link|live|shop))\b",
+    re.IGNORECASE,
+)
+
+
 class ReviewCreate(BaseModel):
     name: str
     neighborhood: str | None = "Hurlingham"
     rating: int = 5
     comment: str
+    website_url: str | None = None  # Campo Honeypot para atrapar bots
 
 
 @app.get("/api/reviews")
@@ -284,10 +291,32 @@ def get_reviews():
 
 @app.post("/api/reviews")
 def submit_review(review: ReviewCreate):
+    # 1. Trampa Honeypot: si el campo oculto contiene texto, es un bot automático
+    if review.website_url and review.website_url.strip():
+        # Respondemos éxito ficticio para que el bot no aprenda ni reintente
+        return {
+            "success": True,
+            "message": "Tu reseña fue recibida correctamente.",
+            "is_approved": False,
+        }
+
     name = review.name.strip()
     comment = review.comment.strip()
     if not name or not comment:
         raise HTTPException(status_code=400, detail="Nombre y comentario son requeridos.")
+
+    # 2. Filtro Anti-spam: bloqueo de enlaces y URLs
+    if URL_REGEX.search(comment) or URL_REGEX.search(name):
+        raise HTTPException(
+            status_code=400,
+            detail="Por seguridad, no se permiten enlaces ni direcciones web en los comentarios.",
+        )
+
+    if len(comment) > 600:
+        raise HTTPException(
+            status_code=400,
+            detail="El comentario no puede superar los 600 caracteres.",
+        )
 
     rating = max(1, min(5, review.rating))
     neighborhood = review.neighborhood.strip() if review.neighborhood else "Hurlingham"
@@ -300,11 +329,16 @@ def submit_review(review: ReviewCreate):
         "rating": rating,
         "comment": comment,
         "date": time.strftime("%d/%m/%Y"),
-        "is_approved": True,
+        "is_approved": False,  # 3. Moderación previa: requiere aprobación en el panel de admin
     }
     reviews.insert(0, new_rev)
     save_reviews(reviews)
-    return {"success": True, "review": new_rev}
+    return {
+        "success": True,
+        "review": new_rev,
+        "is_approved": False,
+        "message": "¡Muchas gracias por tu mensaje de cariño! Quedó guardado y se publicará en la web tras una breve moderación.",
+    }
 
 
 @app.get("/health")
