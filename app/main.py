@@ -1,12 +1,12 @@
+import hashlib
 import json
 import os
-import hashlib
 import re
 import time
 import urllib.parse
 from pathlib import Path
-from typing import List, Optional
-from fastapi import FastAPI, Request, HTTPException, Form, UploadFile, File, Response
+
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -18,12 +18,15 @@ BASE_DIR = Path(__file__).resolve().parent
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "facu2024")
 SECRET_KEY = os.getenv("SECRET_KEY", "facu-super-secret-key-2024")
 
+
 def get_admin_token() -> str:
     return hashlib.sha256(f"{ADMIN_PASSWORD}-{SECRET_KEY}".encode()).hexdigest()
+
 
 def is_admin_authenticated(request: Request) -> bool:
     token = request.cookies.get("admin_session")
     return token == get_admin_token()
+
 
 app = FastAPI(
     title="Facu de las Tortas - Hurlingham",
@@ -68,6 +71,7 @@ CATEGORY_LABELS = {
     "porciones": "🍰 Porciones & Merienda",
 }
 
+
 def load_settings():
     data_path = BASE_DIR / "data" / "settings.json"
     defaults = {
@@ -83,7 +87,7 @@ def load_settings():
     if not data_path.exists():
         return defaults
     try:
-        with open(data_path, "r", encoding="utf-8") as f:
+        with open(data_path, encoding="utf-8") as f:
             data = json.load(f)
             defaults.update(data)
             return defaults
@@ -127,7 +131,7 @@ def load_products():
     data_path = BASE_DIR / "data" / "products.json"
     if not data_path.exists():
         return []
-    with open(data_path, "r", encoding="utf-8") as f:
+    with open(data_path, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -142,7 +146,7 @@ def load_reviews():
     if not data_path.exists():
         return []
     try:
-        with open(data_path, "r", encoding="utf-8") as f:
+        with open(data_path, encoding="utf-8") as f:
             return json.load(f)
     except Exception:
         return []
@@ -178,7 +182,7 @@ def home(request: Request):
 
 
 @app.get("/api/products")
-def get_products(category: Optional[str] = None):
+def get_products(category: str | None = None):
     products = load_products()
     if category and category != "todos":
         products = [p for p in products if p.get("category") == category]
@@ -202,12 +206,12 @@ class OrderItem(BaseModel):
 
 
 class OrderRequest(BaseModel):
-    items: List[OrderItem]
-    customer_name: Optional[str] = ""
-    delivery_type: Optional[str] = "Entrega en Hurlingham"
-    address: Optional[str] = ""
-    delivery_date: Optional[str] = ""
-    notes: Optional[str] = ""
+    items: list[OrderItem]
+    customer_name: str | None = ""
+    delivery_type: str | None = "Entrega en Hurlingham"
+    address: str | None = ""
+    delivery_date: str | None = ""
+    notes: str | None = ""
 
 
 @app.post("/api/orders/whatsapp-link")
@@ -217,7 +221,10 @@ def create_whatsapp_link(order: OrderRequest):
 
     st = load_settings()
     lines = [
-        st.get("whatsapp_greeting", "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:"),
+        st.get(
+            "whatsapp_greeting",
+            "👋 ¡Hola Facu! Te contacto desde tu página web para hacer un pedido:",
+        ),
         "",
         "🍰 *DETALLE DEL PEDIDO:*",
     ]
@@ -259,7 +266,7 @@ def create_whatsapp_link(order: OrderRequest):
 
 class ReviewCreate(BaseModel):
     name: str
-    neighborhood: Optional[str] = "Hurlingham"
+    neighborhood: str | None = "Hurlingham"
     rating: int = 5
     comment: str
 
@@ -303,6 +310,7 @@ def health_check():
 # ==========================================
 # RUTAS DE ADMINISTRACIÓN (PANEL DE CONTROL)
 # ==========================================
+
 
 @app.get("/admin/login")
 def admin_login_page(request: Request):
@@ -424,16 +432,16 @@ def admin_save_settings(
 @app.post("/admin/products/save")
 async def admin_save_product(
     request: Request,
-    id: Optional[str] = Form(None),
+    id: str | None = Form(None),
     name: str = Form(...),
     category: str = Form(...),
     price: float = Form(...),
-    portions: Optional[str] = Form(""),
-    badge: Optional[str] = Form(""),
+    portions: str | None = Form(""),
+    badge: str | None = Form(""),
     description: str = Form(...),
-    image_url: Optional[str] = Form(None),
-    image_file: Optional[UploadFile] = File(None),
-    is_featured: Optional[str] = Form(None),
+    image_url: str | None = Form(None),
+    image_file: UploadFile | None = File(None),
+    is_featured: str | None = Form(None),
 ):
     if not is_admin_authenticated(request):
         raise HTTPException(status_code=403, detail="No autorizado")
@@ -447,7 +455,11 @@ async def admin_save_product(
                 break
 
     # Determinar imagen
-    final_image = existing.get("image") if existing else "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80"
+    final_image = (
+        existing.get("image")
+        if existing
+        else "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80"
+    )
 
     # Si se subió un archivo nuevo
     if image_file and image_file.filename and len(image_file.filename.strip()) > 0:
