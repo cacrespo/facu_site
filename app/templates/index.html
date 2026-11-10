@@ -79,8 +79,8 @@
     <span class="hidden sm:inline">🍰 Pedidos con 24/48 hs de anticipación</span>
   </div>
 
-  <!-- NAVIGATION -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-2xs">
+  <!-- NAVIGATION (Desktop / Tablet only; en mobile se oculta para dar protagonismo total al catálogo) -->
+  <header class="hidden sm:block sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 shadow-2xs">
     <div class="max-w-6xl mx-auto px-3 sm:px-4 h-16 sm:h-20 flex items-center justify-between gap-2">
       
       <!-- Brand Identity (Responsive layout, never collides with nav) -->
@@ -205,8 +205,8 @@
     </div>
   </section>
 
-  <!-- CATEGORY FILTER PILLS (Sticky for mobile easy scrolling) -->
-  <section id="menu" class="sticky top-16 sm:top-20 z-30 bg-white/95 backdrop-blur-md py-3 border-b border-stone-200/80 shadow-2xs">
+  <!-- CATEGORY FILTER PILLS (Sticky: top-0 en mobile, top-20 con header en desktop) -->
+  <section id="menu" class="sticky top-0 sm:top-20 z-30 bg-white/95 backdrop-blur-md py-2.5 sm:py-3 border-b border-stone-200/80 shadow-2xs">
     <div class="max-w-6xl mx-auto px-4">
       <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
         {% for cat in categories %}
