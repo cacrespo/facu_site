@@ -189,21 +189,13 @@
               </div>
 
               <!-- Overlapping Official Seal Badge (Responsive safe margin) -->
-              <div class="absolute -top-4 -right-2 sm:-top-6 sm:-right-4 w-18 h-18 sm:w-24 sm:h-24 rounded-full overflow-hidden border-3 border-white shadow-xl ring-2 ring-[#5f889a]/50 bg-white">
+              <div class="absolute -top-5 -right-3 sm:-top-7 sm:-right-5 w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-3 sm:border-4 border-white shadow-2xl ring-2 ring-[#5f889a]/40 bg-white">
                 <img src="/static/img/logo.jpeg" alt="Sello Oficial Juárez Downes" class="w-full h-full object-cover">
               </div>
 
               <div class="pt-3 px-2 flex items-center justify-between text-xs text-stone-500">
-                <span class="font-semibold text-stone-800">
-                  {{ featured_product.portions if (featured_product and featured_product.portions) else 'Repostería Casera' }}
-                </span>
-                {% if featured_product %}
-                <span class="font-extrabold text-[#bd3742] text-sm sm:text-base">
-                  ${{ "{:,.0f}".format(featured_product.price).replace(",", ".") }}
-                </span>
-                {% else %}
+                <span class="font-semibold text-stone-800">Repostería Casera</span>
                 <span class="font-medium">Hurlingham, Bs. As.</span>
-                {% endif %}
               </div>
             </div>
 
